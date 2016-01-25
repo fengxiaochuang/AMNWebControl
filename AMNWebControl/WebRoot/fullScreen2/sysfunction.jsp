@@ -208,7 +208,7 @@ function createFunction(moduleUrl,moduleId,moduleName,imageurl)
 	   </div>
     </div>
     <script type="text/javascript">
-    	showFunctionDetial("CardControl");
+    	showFunctionDetial("PersonnelControl");
     </script>
 </body>
 </html>

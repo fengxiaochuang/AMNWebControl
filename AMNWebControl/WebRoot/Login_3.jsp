@@ -174,7 +174,7 @@ Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-templa
 		}); */
 		$(function(){
 			  App.init();
-			  $("#tj3").click();
+			  //$("#tj3").click();
 			  Login.init();
 		});
 	</script>

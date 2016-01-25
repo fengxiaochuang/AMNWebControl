@@ -114,12 +114,12 @@
           	$("#outToDate").val(curdate);
             $("#pageloading").hide(); 
             f_setColumns();
-            //addtradeNew(commoninfodivTradeDate);
+            addtrade(commoninfodivTradeDate);
             addtrade(inDataGrid);
             addtrade(outDataGrid);
    		}catch(e){alert(e.message);}
     });
-
+    
      function f_setColumns(){ 
      		var showColumns='[', newColumns=null; 
      		showColumns+='{"display":"编号","frozen":"true","name":"strCompId","width":"60","align":"left"},';
@@ -183,7 +183,6 @@
     }
     
     function loadDataSetMessage(request){
-    	showDialogmanager.close();
 		var responsetext = eval("(" + request.responseText + ")");
 		if(responsetext.lsDataSet!=null && responsetext.lsDataSet.length>0){
    			var curdate=loadPrjData(responsetext.lsDataSet);
@@ -213,6 +212,7 @@
    				addtrade(outDataGrid); 
    			}
 		}
+		showDialogmanager.close();
 	}
 	
 	function loadPrjData(lsDataSet){

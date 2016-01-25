@@ -159,7 +159,6 @@ $(function ()
     			}
        		}
        	}
-        
         compSelect();
         $("#handDyqOuterCardInfo").ligerButton({
      	   text: '登记微信券', width: 120,

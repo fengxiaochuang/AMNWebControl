@@ -97,716 +97,704 @@
 	}
 	
     $(function ()
-   	{
-	   try
-	   { 
-		   //setTimeout('loadBillId()',5000);
-	   		  //布局
-            cc011layout= $("#cc011layout").ligerLayout({ rightWidth: 280,  allowBottomResize: false, allowLeftResize: false,onEndResize:changeWidth });
-             var lawidth = cc011layout.centerWidth;
-     
-             $("#readCurCardInfo").ligerButton(
-	         {
-	             text: '读取信息', width: 140,
-		         click: function ()
-		         {
-		             editCurDetailInfo();
-		         }
-	         });
-	       
-	         $("#otherPay").ligerButton(
-	         {
-	             text: '分单支付', width: 120, height: 120,
-		         click: function ()
-		         {
-		             //editCurDetailInfo();
-		         }
-	         });
+    	   	{
+ 	   try
+ 	   { 
+ 		   //setTimeout('loadBillId()',5000);
+ 	   		  //布局
+             cc011layout= $("#cc011layout").ligerLayout({ rightWidth: 280,  allowBottomResize: false, allowLeftResize: false,onEndResize:changeWidth });
+              var lawidth = cc011layout.centerWidth;
+              $("#readCurCardInfo").ligerButton(
+ 	         {
+ 	             text: '读取信息', width: 140,
+ 		         click: function ()
+ 		         {
+ 		             editCurDetailInfo();
+ 		         }
+ 	         });
+ 	         $("#otherPay").ligerButton(
+ 	         {
+ 	             text: '分单支付', width: 120, height: 120,
+ 		         click: function ()
+ 		         {
+ 		             //editCurDetailInfo();
+ 		         }
+ 	         });
+            rightmenu = $.ligerMenu({ width: 120, items:
+ 	            [
+ 	            	{ text: '现金分单支付', click: needOtherPay, icon: 'add' },
+ 	            	{ text: '原价分单支付', click: needOldOtherPay, icon: 'add' },
+ 	            	{ text: '储值分单支付', click: needOtherCardPay, icon: 'add' }
+ 	            ]
+ 	            }); 
+             
+             commoninfodivdetial=$("#commoninfodivdetial").ligerGrid({
+                 columns: [
+                 { hide:true,		name: 'bcsinfotype'},
+                 { hide:true,		name: 'goodsbarno' },
+                 { display: '项目/产品' ,	name: 'csitemname', width:270,align: 'center',
+                 	editor: { type: 'select', data: null, url:'loadAutoProject',
+                 	autocomplete: true, 
+                 	valueField: 'choose',
+                 	onChanged : validateItem,selectBoxWidth:300,
+                 	selectBoxHeight:300}
+                 },
+                 { display: '支付方式', 	name: 'cspaymode', 			width:95,
+ 	             	editor: { type: 'select', data: paymodeChangeData, valueField: 'choose',selectBoxWidth:105,onChanged : validatePaycode},
+ 		            	render: function (item)
+ 		              	{
+ 		              		var lsZw=parent.gainCommonInfoByCode("ZFFS",0);
+ 		              		for(var i=0;i<lsZw.length;i++)
+ 							{
+ 								if(lsZw[i].bparentcodekey==item.cspaymode)
+ 								{	
+ 									return "<span style='color:blue'>"+lsZw[i].parentcodevalue+"</span>";								
+ 							    }
+ 							}
+ 		                    return '';
+ 		                } 
+ 		        },
+ 		        { display: '单价', 		name: 'csunitprice', 		width:50,align: 'right'},
+ 		       
+ 	            { display: '折扣', 		name: 'csdiscount', 		width:50,align: 'right' },
+ 	            { display: '数量', 		name: 'csitemcount', 		width:50,align: 'right', editor: { type: 'int' ,onChanged : validateCostCount}  },
+ 	            { display: '金额', 		name: 'csitemamt', 			width:60,align: 'right', editor: { type: 'float',onChanged : validateCostAmt }  },
+ 	         
+ 	            { display: '大工', 		name: 'csfirstsaler', 		width:100,
+ 	            	editor: { type: 'select', data: lsStaffSelectData, url:'loadAutoStaff',autocomplete: true, valueField: 'choose',selectBoxWidth:150,onChanged : validateFristSaleType,alwayShowInDown:true},
+ 	            	render: function (item)
+ 	              	{	
+ 	              		
+ 	              		for(var i=0;i<parent.StaffInfo.length;i++)
+ 						{	
+ 								if(parent.StaffInfo[i].bstaffno==item.csfirstsaler)
+ 								{
+ 									return "<span style='color:blue'>"+parent.StaffInfo[i].staffname+"</span>";
+ 								}
+ 						}
+ 	                    return '';
+ 	                } 
+ 	            },
+ 	            { display: '类型', 		name: 'csfirsttype', 		width:60 ,
+ 	             	editor: { type: 'select', data: servicetypeChangeData, valueField: 'choose',selectBoxHeight:'120'},
+ 		            	render: function (item)
+ 		              	{
+ 		              		var lsZw=parent.gainCommonInfoByCode("FWLB",0);
+ 		              		for(var i=0;i<lsZw.length;i++)
+ 							{
+ 								if(lsZw[i].bparentcodekey==item.csfirsttype)
+ 								{	
+ 									return "<span style='color:blue'>"+lsZw[i].parentcodevalue+"</span>";								
+ 							    }
+ 							}
+ 		                    return '';
+ 		                } 
+ 	            },
+ 	            { display: '分享', 		name: 'csfirstshare', 	width:50,align: 'left', editor: { type: 'float', onChanged : validateFristSaleShare} },
+ 	            { display: '中工', 		name: 'cssecondsaler', 		width:100,
+ 	            	editor: { type: 'select', data: lsStaffSelectData,  url:'loadAutoStaff',autocomplete: true,valueField: 'choose',selectBoxWidth:150,onChanged : validateSecondSaleType,alwayShowInDown:true},
+ 	            	render: function (item)
+ 	              	{
+ 	              		for(var i=0;i<parent.StaffInfo.length;i++)
+ 						{	
+ 								if(parent.StaffInfo[i].bstaffno==item.cssecondsaler)
+ 								{
+ 									return "<span style='color:blue'>"+parent.StaffInfo[i].staffname+"</span>";
+ 								}
+ 						}
+ 	                    return '';
+ 	                } 
+ 	            },
+ 	            { display: '类型', 		name: 'cssecondtype', 		width:60 ,
+ 	             	editor: { type: 'select', data: servicetypeChangeData, valueField: 'choose',selectBoxHeight:'120'},
+ 		            	render: function (item)
+ 		              	{
+ 		              		var lsZw=parent.gainCommonInfoByCode("FWLB",0);
+ 		              		for(var i=0;i<lsZw.length;i++)
+ 							{
+ 								if(lsZw[i].bparentcodekey==item.cssecondtype)
+ 								{	
+ 									return "<span style='color:blue'>"+lsZw[i].parentcodevalue+"</span>";								
+ 							    }
+ 							}
+ 		                    return '';
+ 		                } 
+ 	            },
+ 	            { display: '分享', 		name: 'cssecondshare', 	width:50,align: 'left', editor: { type: 'float', onChanged : validateSecondSaleShare } },
+ 	            { display: '小工', 		name: 'csthirdsaler', 		width:100,
+ 	            	editor: { type: 'select', data: lsStaffSelectData,url:'loadAutoStaff',autocomplete: true, valueField: 'choose',selectBoxWidth:150,onChanged : validateThirdSaleType,alwayShowInDown:true},
+ 	            	render: function (item)
+ 	              	{
+ 	              		for(var i=0;i<parent.StaffInfo.length;i++)
+ 						{	
+ 								if(parent.StaffInfo[i].bstaffno==item.csthirdsaler)
+ 								{
+ 									return "<span style='color:blue'>"+parent.StaffInfo[i].staffname+"</span>";
+ 								}
+ 						}
+ 	                    return '';
+ 	                } 
+ 	            },
+ 	            { display: '类型', 		name: 'csthirdtype', 		width:60 ,
+ 	             	editor: { type: 'select', data: servicetypeChangeData, valueField: 'choose',selectBoxHeight:'120'},
+ 		            	render: function (item)
+ 		              	{
+ 		              		var lsZw=parent.gainCommonInfoByCode("FWLB",0);
+ 		              		for(var i=0;i<lsZw.length;i++)
+ 							{
+ 								if(lsZw[i].bparentcodekey==item.csthirdtype)
+ 								{	
+ 									return "<span style='color:blue'>"+lsZw[i].parentcodevalue+"</span>";								
+ 							    }
+ 							}
+ 		                    return '';
+ 		                } 
+ 	            },
+ 	           	{ display: '分享', 	name: 'csthirdshare', 		width:50,align: 'left', editor: { type: 'float' , onChanged : validateThirdSaleShare} },
+ 	            { display: '序号', 	name: 'csproseqno', 	width:60, 	align: 'right'},
+ 	            { display: '达标', 	name: 'csitemstate', 	width:60, 	align: 'right' , 
+ 	                editor: { type: 'select', data: chooseItemstateData, valueField: 'choose' },
+ 	                render: function (item)
+ 	                {
+ 	                    if (item.csitemstate == 0) return '';
+ 	                    else if (item.csitemstate == 1) return "<span style='color:blue'>达标</span>";
+ 	                    else if (item.csitemstate == 2) return "<span style='color:red'>未达标</span>";
+ 	                    else if (item.csitemstate == 3) return "<span style='color:red'>不合格</span>";
+ 	                    return '';
+ 	                }
+ 	            },
+ 	            {display:'介绍人',name:'hairRecommendEmpId',width:60,align:'right',render:function(item){
+ 	            	for(var i=0;i<parent.StaffInfo.length;i++)
+ 					{	
+ 							if(parent.StaffInfo[i].bstaffno==item.hairRecommendEmpId)
+ 							{
+ 								return "<span style='color:blue'>"+parent.StaffInfo[i].staffname+"</span>";
+ 							}
+ 					}
+                     return '';
+ 	            }},
+ 	            //{	name: 'hairRecommendEmpId', 	hide:true,	width:1},
+ 	            {	name: 'hairRecommendEmpInid', 	hide:true,	width:1},
+ 	            {	name: 'fscsitemstate', 	hide:true,	width:1},
+ 	            {	name: 'csdisprice', 	hide:true,	width:1},
+ 	            {	name: 'shareflag', 	hide:true,	width:1},
+ 	            {   name: 'iscard',hide:true,width:1},
+ 	            {	name: 'costpricetype', 	hide:true,	width:1},
+ 	            {	name: 'phone', 	hide:true,	width:1},
+ 	            { hide:true,		name: 'yearinid',width:1   },
+ 	           	{ 	name: 'csitemno', 		hide:true,width:1},
+ 	            { name:'saledate',hide:true, width:1},
+ 	            { name:'activinid',hide:true, width:1}
+                 ],  pageSize:25, 
+                 data:{Rows: null,Total:0},      
+                 //width: lawidth-6,
+                 width:'100%',
+                 height:'460',
+                 enabledEdit: false,   clickToEdit: false,usePager: false,
+                 onSelectRow : function (data, rowindex, rowobj)
+                 {
+                     curRecord = data;
+                     initFastGrid();
+                     if(checkNull(data.cspaymode)=="9" || checkNull(data.cspaymode)=="11" || checkNull(data.cspaymode)=="13" || checkNull(data.cspaymode)=="16" || checkNull(data.cspaymode)=="18")
+                     {
+                     	document.getElementById("itempay").disabled=true;
+                     }
+                     else
+                     {
+                     	document.getElementById("itempay").disabled=false;
+                     }
+                     
+                     if(checkNull(data.csitemname)!="")
+                     {
+                     	document.getElementById("wCostItemNo").readOnly="readOnly";
+ 		    			document.getElementById("wCostItemNo").style.background="#EDF1F8";
+ 						document.getElementById("wCostItemBarNo").readOnly="readOnly";
+ 		    			document.getElementById("wCostItemBarNo").style.background="#EDF1F8";
+ 		    			document.getElementById("wgCostCount").readOnly="readOnly";
+ 		    			document.getElementById("wgCostCount").style.background="#EDF1F8";
+ 		    			document.getElementById("wCostFirstEmpNo").select();
+ 		    			document.getElementById("wCostFirstEmpNo").focus();
+                     }
+                     else
+                     {
+                     	document.getElementById("wCostItemNo").readOnly="";
+ 		    			document.getElementById("wCostItemNo").style.background="#FFFFFF";
+ 						document.getElementById("wCostItemBarNo").readOnly="";
+ 		    			document.getElementById("wCostItemBarNo").style.background="#FFFFFF";
+ 		    			document.getElementById("wgCostCount").readOnly="";
+ 		    			document.getElementById("wgCostCount").style.background="#FFFFFF";
+                     	document.getElementById("wCostItemNo").focus();
+                     	document.getElementById("wCostItemNo").select();
+                     }
+                     
+                     if(checkNull(data.csitemcount)*1!=0 && checkNull(data.csitemcount)*1<1 )
+                     {
+                     	document.getElementById("wCostFirstEmpNo").readOnly="readOnly";
+ 	                    document.getElementById("wCostFirstEmpNo").style.background="#EDF1F8";
+ 	                    document.getElementById("wCostSecondEmpNo").readOnly="readOnly";
+ 	                    document.getElementById("wCostSecondEmpNo").style.background="#EDF1F8";
+ 			     		document.getElementById("wCostthirthdEmpNo").readOnly="readOnly";
+ 			     		document.getElementById("wCostthirthdEmpNo").style.background="#EDF1F8";
+                     }
+                     else
+                     {
+                     	document.getElementById("wCostFirstEmpNo").readOnly="";
+ 	                    document.getElementById("wCostFirstEmpNo").style.background="#FFFFFF";
+ 	                    document.getElementById("wCostSecondEmpNo").readOnly="";
+ 	                    document.getElementById("wCostSecondEmpNo").style.background="#FFFFFF";
+ 			     		document.getElementById("wCostthirthdEmpNo").readOnly="";
+ 			     		document.getElementById("wCostthirthdEmpNo").style.background="#FFFFFF";
+                     }
+                    
+ 		     		if(checkNull(data.csitemno)!="" 
+ 			 				&& document.getElementById("paramSp097").value=="1"
+ 			 				&&(  checkNull(data.csitemno).indexOf("498")==0
+ 			 				  || checkNull(data.csitemno).indexOf("490")==0
+ 			 				  || checkNull(data.csitemno).indexOf("46")==0))
+ 		     		{
+ 		     				document.getElementById("wCostSecondEmpNo").readOnly="readOnly";
+ 			     			document.getElementById("wCostSecondEmpNo").style.background="#EDF1F8";
+ 			     			document.getElementById("wCostthirthdEmpNo").readOnly="readOnly";
+ 			     			document.getElementById("wCostthirthdEmpNo").style.background="#EDF1F8";
+ 		     		}
+ 		     		
+ 		     		//如果不启用条码数量不能修改
+ 		     		/*if(checkNull(data.csitemno)!="")
+ 		     		{
+ 			     		if(parent.lsProjectinfo!=null && parent.lsProjectinfo.length>0)
+ 						{
+ 								for(var i=0;i<parent.lsProjectinfo.length;i++)
+ 								{
+ 									if(parent.lsProjectinfo[i].id.prjno==data.csitemno )
+ 									{
+ 				     					if(document.getElementById("paramSp097").value=="1")
+ 				     					{
+ 				     						if(checkNull(parent.lsProjectinfo[i].prjtype)=="4")
+ 				     						{
+ 				     							document.getElementById("wCostSecondEmpNo").readOnly="readOnly";
+ 				     							document.getElementById("wCostSecondEmpNo").style.background="#EDF1F8";
+ 				     							document.getElementById("wCostthirthdEmpNo").readOnly="readOnly";
+ 				     							document.getElementById("wCostthirthdEmpNo").style.background="#EDF1F8";
+ 				     						}
+ 				     					}
+ 				     					break;
+ 									}
+ 								}
+ 						}	
+ 		     		}*/	
+                     /*if(checkNull(data.csitemcount)*1<1)
+                     {
+                     	document.getElementById("wCostPCount").readOnly="readOnly";
+ 		    			document.getElementById("wCostPCount").style.background="#EDF1F8";
+                     }*/
+                 },onRClickToSelect:true,
+                 onContextmenu : function (parm,e)
+                 {
+                 	 istartBarCode=parm.data.frombarcode;
+     				 iendBarCode=parm.data.tobarcode;
+     				 iGoodsBarCode=parm.data.insergoodsno;
+                      rightmenu.show({ top: e.pageY, left: e.pageX });
+                      return false;
+                 }     
+             });
+             commoninfodivdetial_cardInfo=$("#commoninfodivdetial_cardInfo").ligerGrid({
+                 columns: [
+                 { 
+                 	display: '账户信息', 	name: 'strcardinfo',  	width:195,align: 'left' }
+                 ],  pageSize:25, 
+                 data:{Rows: null,Total:0},      
+                 width: '200',
+                 height:'240',
+                 enabledEdit: true, checkbox: false,
+                 rownumbers: false,usePager: false
+             });
+            commoninfodivdetial_payInfo=$("#commoninfodivdetial_payInfo").ligerGrid({
+                 columns: [
+                 { 
+                 	display: '支付信息', 	name: 'strpayinfo',  	width:195,align: 'left' }
+                 ],  pageSize:25, 
+                 data:{Rows: null,Total:0},      
+                 width: '200',
+                 height:'240',
+                 enabledEdit: true, checkbox: false,
+                 rownumbers: false,usePager: false,fixedCellHeight:false
+             });
+            commoninfodivdetial_padInfo=$("#commoninfodivdetial_padInfo").ligerGrid({
+                 columns: [
+                 { display: '手牌号', 	name: 'custom',  	width:70,align: 'left' },
+                 { display: '小单号', 	name: 'smallno',  	width:120,align: 'left' }
+                 ],  pageSize:25, 
+                 data:{Rows: null,Total:0},      
+                 width: '200',
+                 height:'240',
+                 enabledEdit: true, checkbox: false,
+                 rownumbers: false,usePager: false,fixedCellHeight:false,
+                 onSelectRow : function (data, rowindex, rowobj)
+                 {
+                 	loadPadDetialInfo(data);
+                 }
+             });
             
-           rightmenu = $.ligerMenu({ width: 120, items:
-	            [
-	            	{ text: '现金分单支付', click: needOtherPay, icon: 'add' },
-	            	{ text: '原价分单支付', click: needOldOtherPay, icon: 'add' },
-	            	{ text: '储值分单支付', click: needOtherCardPay, icon: 'add' }
-	            ]
-	            }); 
-            
-            commoninfodivdetial=$("#commoninfodivdetial").ligerGrid({
+            commoninfodivdetial_WX=$("#commoninfodivdetial_WX").ligerGrid({
                 columns: [
-                { hide:true,		name: 'bcsinfotype'},
-                { hide:true,		name: 'goodsbarno' },
-                { display: '项目/产品' ,	name: 'csitemname', width:270,align: 'center',
-                	editor: { type: 'select', data: null, url:'loadAutoProject',
-                	autocomplete: true, 
-                	valueField: 'choose',
-                	onChanged : validateItem,selectBoxWidth:300,
-                	selectBoxHeight:300}
+                { display: '单号', 	name: 'bcsbillid',  	width:120,align: 'left' , 
+             	   render: function (row) {  
+     					var html ="";
+     					if(row.bcscompid=="未结账"){
+     						html ="<font color='red'>"+row.bcsbillid+"</font>";  
+     					}else if(row.bcscompid=="已结账"){
+     						html ="<font color='green'>"+row.bcsbillid+"</font>";
+     					}else{
+     						html=row.bcsbillid;
+     					}
+     					return html;  
+ 					}
                 },
-                { display: '支付方式', 	name: 'cspaymode', 			width:95,
-	             	editor: { type: 'select', data: paymodeChangeData, valueField: 'choose',selectBoxWidth:105,onChanged : validatePaycode},
-		            	render: function (item)
-		              	{
-		              		var lsZw=parent.gainCommonInfoByCode("ZFFS",0);
-		              		for(var i=0;i<lsZw.length;i++)
-							{
-								if(lsZw[i].bparentcodekey==item.cspaymode)
-								{	
-									return "<span style='color:blue'>"+lsZw[i].parentcodevalue+"</span>";								
-							    }
-							}
-		                    return '';
-		                } 
-		        },
-		        { display: '单价', 		name: 'csunitprice', 		width:50,align: 'right'},
-		       
-	            { display: '折扣', 		name: 'csdiscount', 		width:50,align: 'right' },
-	            { display: '数量', 		name: 'csitemcount', 		width:50,align: 'right', editor: { type: 'int' ,onChanged : validateCostCount}  },
-	            { display: '金额', 		name: 'csitemamt', 			width:60,align: 'right', editor: { type: 'float',onChanged : validateCostAmt }  },
-	         
-	            { display: '大工', 		name: 'csfirstsaler', 		width:100,
-	            	editor: { type: 'select', data: lsStaffSelectData, url:'loadAutoStaff',autocomplete: true, valueField: 'choose',selectBoxWidth:150,onChanged : validateFristSaleType,alwayShowInDown:true},
-	            	render: function (item)
-	              	{	
-	              		
-	              		for(var i=0;i<parent.StaffInfo.length;i++)
-						{	
-								if(parent.StaffInfo[i].bstaffno==item.csfirstsaler)
-								{
-									return "<span style='color:blue'>"+parent.StaffInfo[i].staffname+"</span>";
-								}
-						}
-	                    return '';
-	                } 
-	            },
-	            { display: '类型', 		name: 'csfirsttype', 		width:60 ,
-	             	editor: { type: 'select', data: servicetypeChangeData, valueField: 'choose',selectBoxHeight:'120'},
-		            	render: function (item)
-		              	{
-		              		var lsZw=parent.gainCommonInfoByCode("FWLB",0);
-		              		for(var i=0;i<lsZw.length;i++)
-							{
-								if(lsZw[i].bparentcodekey==item.csfirsttype)
-								{	
-									return "<span style='color:blue'>"+lsZw[i].parentcodevalue+"</span>";								
-							    }
-							}
-		                    return '';
-		                } 
-	            },
-	            { display: '分享', 		name: 'csfirstshare', 	width:50,align: 'left', editor: { type: 'float', onChanged : validateFristSaleShare} },
-	            { display: '中工', 		name: 'cssecondsaler', 		width:100,
-	            	editor: { type: 'select', data: lsStaffSelectData,  url:'loadAutoStaff',autocomplete: true,valueField: 'choose',selectBoxWidth:150,onChanged : validateSecondSaleType,alwayShowInDown:true},
-	            	render: function (item)
-	              	{
-	              		for(var i=0;i<parent.StaffInfo.length;i++)
-						{	
-								if(parent.StaffInfo[i].bstaffno==item.cssecondsaler)
-								{
-									return "<span style='color:blue'>"+parent.StaffInfo[i].staffname+"</span>";
-								}
-						}
-	                    return '';
-	                } 
-	            },
-	            { display: '类型', 		name: 'cssecondtype', 		width:60 ,
-	             	editor: { type: 'select', data: servicetypeChangeData, valueField: 'choose',selectBoxHeight:'120'},
-		            	render: function (item)
-		              	{
-		              		var lsZw=parent.gainCommonInfoByCode("FWLB",0);
-		              		for(var i=0;i<lsZw.length;i++)
-							{
-								if(lsZw[i].bparentcodekey==item.cssecondtype)
-								{	
-									return "<span style='color:blue'>"+lsZw[i].parentcodevalue+"</span>";								
-							    }
-							}
-		                    return '';
-		                } 
-	            },
-	            { display: '分享', 		name: 'cssecondshare', 	width:50,align: 'left', editor: { type: 'float', onChanged : validateSecondSaleShare } },
-	            { display: '小工', 		name: 'csthirdsaler', 		width:100,
-	            	editor: { type: 'select', data: lsStaffSelectData,url:'loadAutoStaff',autocomplete: true, valueField: 'choose',selectBoxWidth:150,onChanged : validateThirdSaleType,alwayShowInDown:true},
-	            	render: function (item)
-	              	{
-	              		for(var i=0;i<parent.StaffInfo.length;i++)
-						{	
-								if(parent.StaffInfo[i].bstaffno==item.csthirdsaler)
-								{
-									return "<span style='color:blue'>"+parent.StaffInfo[i].staffname+"</span>";
-								}
-						}
-	                    return '';
-	                } 
-	            },
-	            { display: '类型', 		name: 'csthirdtype', 		width:60 ,
-	             	editor: { type: 'select', data: servicetypeChangeData, valueField: 'choose',selectBoxHeight:'120'},
-		            	render: function (item)
-		              	{
-		              		var lsZw=parent.gainCommonInfoByCode("FWLB",0);
-		              		for(var i=0;i<lsZw.length;i++)
-							{
-								if(lsZw[i].bparentcodekey==item.csthirdtype)
-								{	
-									return "<span style='color:blue'>"+lsZw[i].parentcodevalue+"</span>";								
-							    }
-							}
-		                    return '';
-		                } 
-	            },
-	           	{ display: '分享', 	name: 'csthirdshare', 		width:50,align: 'left', editor: { type: 'float' , onChanged : validateThirdSaleShare} },
-	            { display: '序号', 	name: 'csproseqno', 	width:60, 	align: 'right'},
-	            { display: '达标', 	name: 'csitemstate', 	width:60, 	align: 'right' , 
-	                editor: { type: 'select', data: chooseItemstateData, valueField: 'choose' },
-	                render: function (item)
-	                {
-	                    if (item.csitemstate == 0) return '';
-	                    else if (item.csitemstate == 1) return "<span style='color:blue'>达标</span>";
-	                    else if (item.csitemstate == 2) return "<span style='color:red'>未达标</span>";
-	                    else if (item.csitemstate == 3) return "<span style='color:red'>不合格</span>";
-	                    return '';
-	                }
-	            },
-	            {display:'介绍人',name:'hairRecommendEmpId',width:60,align:'right',render:function(item){
-	            	for(var i=0;i<parent.StaffInfo.length;i++)
-					{	
-							if(parent.StaffInfo[i].bstaffno==item.hairRecommendEmpId)
-							{
-								return "<span style='color:blue'>"+parent.StaffInfo[i].staffname+"</span>";
-							}
-					}
-                    return '';
-	            }},
-	            //{	name: 'hairRecommendEmpId', 	hide:true,	width:1},
-	            {	name: 'hairRecommendEmpInid', 	hide:true,	width:1},
-	            {	name: 'fscsitemstate', 	hide:true,	width:1},
-	            {	name: 'csdisprice', 	hide:true,	width:1},
-	            {	name: 'shareflag', 	hide:true,	width:1},
-	            {   name: 'iscard',hide:true,width:1},
-	            {	name: 'costpricetype', 	hide:true,	width:1},
-	            {	name: 'phone', 	hide:true,	width:1},
-	            { hide:true,		name: 'yearinid',width:1   },
-	           	{ 	name: 'csitemno', 		hide:true,width:1},
-	            { name:'saledate',hide:true, width:1},
-	            { name:'activinid',hide:true, width:1}
-                ],  pageSize:25, 
-                data:{Rows: null,Total:0},      
-                //width: lawidth-6,
-                width:'100%',
-                height:'460',
-                enabledEdit: false,   clickToEdit: false,usePager: false,
-                onSelectRow : function (data, rowindex, rowobj)
-                {
-                    curRecord = data;
-                    initFastGrid();
-                    if(checkNull(data.cspaymode)=="9" || checkNull(data.cspaymode)=="11" || checkNull(data.cspaymode)=="13" || checkNull(data.cspaymode)=="16" || checkNull(data.cspaymode)=="18")
-                    {
-                    	document.getElementById("itempay").disabled=true;
-                    }
-                    else
-                    {
-                    	document.getElementById("itempay").disabled=false;
-                    }
-                    
-                    if(checkNull(data.csitemname)!="")
-                    {
-                    	document.getElementById("wCostItemNo").readOnly="readOnly";
-		    			document.getElementById("wCostItemNo").style.background="#EDF1F8";
-						document.getElementById("wCostItemBarNo").readOnly="readOnly";
-		    			document.getElementById("wCostItemBarNo").style.background="#EDF1F8";
-		    			document.getElementById("wgCostCount").readOnly="readOnly";
-		    			document.getElementById("wgCostCount").style.background="#EDF1F8";
-		    			document.getElementById("wCostFirstEmpNo").select();
-		    			document.getElementById("wCostFirstEmpNo").focus();
-                    }
-                    else
-                    {
-                    	document.getElementById("wCostItemNo").readOnly="";
-		    			document.getElementById("wCostItemNo").style.background="#FFFFFF";
-						document.getElementById("wCostItemBarNo").readOnly="";
-		    			document.getElementById("wCostItemBarNo").style.background="#FFFFFF";
-		    			document.getElementById("wgCostCount").readOnly="";
-		    			document.getElementById("wgCostCount").style.background="#FFFFFF";
-                    	document.getElementById("wCostItemNo").focus();
-                    	document.getElementById("wCostItemNo").select();
-                    }
-                    
-                    if(checkNull(data.csitemcount)*1!=0 && checkNull(data.csitemcount)*1<1 )
-                    {
-                    	document.getElementById("wCostFirstEmpNo").readOnly="readOnly";
-	                    document.getElementById("wCostFirstEmpNo").style.background="#EDF1F8";
-	                    document.getElementById("wCostSecondEmpNo").readOnly="readOnly";
-	                    document.getElementById("wCostSecondEmpNo").style.background="#EDF1F8";
-			     		document.getElementById("wCostthirthdEmpNo").readOnly="readOnly";
-			     		document.getElementById("wCostthirthdEmpNo").style.background="#EDF1F8";
-                    }
-                    else
-                    {
-                    	document.getElementById("wCostFirstEmpNo").readOnly="";
-	                    document.getElementById("wCostFirstEmpNo").style.background="#FFFFFF";
-	                    document.getElementById("wCostSecondEmpNo").readOnly="";
-	                    document.getElementById("wCostSecondEmpNo").style.background="#FFFFFF";
-			     		document.getElementById("wCostthirthdEmpNo").readOnly="";
-			     		document.getElementById("wCostthirthdEmpNo").style.background="#FFFFFF";
-                    }
-                   
-		     		if(checkNull(data.csitemno)!="" 
-			 				&& document.getElementById("paramSp097").value=="1"
-			 				&&(  checkNull(data.csitemno).indexOf("498")==0
-			 				  || checkNull(data.csitemno).indexOf("490")==0
-			 				  || checkNull(data.csitemno).indexOf("46")==0))
-		     		{
-		     				document.getElementById("wCostSecondEmpNo").readOnly="readOnly";
-			     			document.getElementById("wCostSecondEmpNo").style.background="#EDF1F8";
-			     			document.getElementById("wCostthirthdEmpNo").readOnly="readOnly";
-			     			document.getElementById("wCostthirthdEmpNo").style.background="#EDF1F8";
-		     		}
-		     		
-		     		//如果不启用条码数量不能修改
-		     		/*if(checkNull(data.csitemno)!="")
-		     		{
-			     		if(parent.lsProjectinfo!=null && parent.lsProjectinfo.length>0)
-						{
-								for(var i=0;i<parent.lsProjectinfo.length;i++)
-								{
-									if(parent.lsProjectinfo[i].id.prjno==data.csitemno )
-									{
-				     					if(document.getElementById("paramSp097").value=="1")
-				     					{
-				     						if(checkNull(parent.lsProjectinfo[i].prjtype)=="4")
-				     						{
-				     							document.getElementById("wCostSecondEmpNo").readOnly="readOnly";
-				     							document.getElementById("wCostSecondEmpNo").style.background="#EDF1F8";
-				     							document.getElementById("wCostthirthdEmpNo").readOnly="readOnly";
-				     							document.getElementById("wCostthirthdEmpNo").style.background="#EDF1F8";
-				     						}
-				     					}
-				     					break;
-									}
-								}
-						}	
-		     		}*/	
-                    /*if(checkNull(data.csitemcount)*1<1)
-                    {
-                    	document.getElementById("wCostPCount").readOnly="readOnly";
-		    			document.getElementById("wCostPCount").style.background="#EDF1F8";
-                    }*/
-                },onRClickToSelect:true,
-                onContextmenu : function (parm,e)
-                {
-                	 istartBarCode=parm.data.frombarcode;
-    				 iendBarCode=parm.data.tobarcode;
-    				 iGoodsBarCode=parm.data.insergoodsno;
-                     rightmenu.show({ top: e.pageY, left: e.pageX });
-                     return false;
-                }     
-            });
-  
-            commoninfodivdetial_cardInfo=$("#commoninfodivdetial_cardInfo").ligerGrid({
-                columns: [
-                { 
-                	display: '账户信息', 	name: 'strcardinfo',  	width:195,align: 'left' }
-                ],  pageSize:25, 
-                data:{Rows: null,Total:0},      
-                width: '200',
-                height:'240',
-                enabledEdit: true, checkbox: false,
-                rownumbers: false,usePager: false
-            });
-           commoninfodivdetial_payInfo=$("#commoninfodivdetial_payInfo").ligerGrid({
-                columns: [
-                { 
-                	display: '支付信息', 	name: 'strpayinfo',  	width:195,align: 'left' }
-                ],  pageSize:25, 
+                { display: '状态', 	name: 'bcscompid',  	width:70,align: 'left',
+             	   render: function (row) {  
+ 	   					var html ="";
+ 	   					if(row.bcscompid=="未结账"){
+ 	   						html ="<font color='red'>"+row.bcscompid+"</font>";  
+ 	   					}else if(row.bcscompid=="已结账"){
+ 	   						html ="<font color='green'>"+row.bcscompid+"</font>";
+ 	   					}else{
+ 	   						html=row.bcscompid;
+ 	   					}
+ 	   					return html;  
+ 					}
+                	}],  pageSize:25, 
                 data:{Rows: null,Total:0},      
                 width: '200',
                 height:'240',
                 enabledEdit: true, checkbox: false,
                 rownumbers: false,usePager: false,fixedCellHeight:false
             });
-            
-           commoninfodivdetial_padInfo=$("#commoninfodivdetial_padInfo").ligerGrid({
-                columns: [
-                { display: '手牌号', 	name: 'custom',  	width:70,align: 'left' },
-                { display: '小单号', 	name: 'smallno',  	width:120,align: 'left' }
-                ],  pageSize:25, 
-                data:{Rows: null,Total:0},      
-                width: '200',
-                height:'240',
-                enabledEdit: true, checkbox: false,
-                rownumbers: false,usePager: false,fixedCellHeight:false,
-                onSelectRow : function (data, rowindex, rowobj)
-                {
-                	loadPadDetialInfo(data);
-                }
-            });
-           
-           
-           commoninfodivdetial_WX=$("#commoninfodivdetial_WX").ligerGrid({
-               columns: [
-               { display: '单号', 	name: 'bcsbillid',  	width:120,align: 'left' , 
-            	   render: function (row) {  
-    					var html ="";
-    					if(row.bcscompid=="未结账"){
-    						html ="<font color='red'>"+row.bcsbillid+"</font>";  
-    					}else if(row.bcscompid=="已结账"){
-    						html ="<font color='green'>"+row.bcsbillid+"</font>";
-    					}else{
-    						html=row.bcsbillid;
-    					}
-    					return html;  
-					}
-               },
-               { display: '状态', 	name: 'bcscompid',  	width:70,align: 'left',
-            	   render: function (row) {  
-	   					var html ="";
-	   					if(row.bcscompid=="未结账"){
-	   						html ="<font color='red'>"+row.bcscompid+"</font>";  
-	   					}else if(row.bcscompid=="已结账"){
-	   						html ="<font color='green'>"+row.bcscompid+"</font>";
-	   					}else{
-	   						html=row.bcscompid;
-	   					}
-	   					return html;  
-					}
-               	}],  pageSize:25, 
-               data:{Rows: null,Total:0},      
-               width: '200',
-               height:'240',
-               enabledEdit: true, checkbox: false,
-               rownumbers: false,usePager: false,fixedCellHeight:false
-           });
-            
-            commoninfodivdetial_Pro=$("#commoninfodivdetial_Pro").ligerGrid({
-                columns: [
-                { display: '疗程号', 	    name: 'bproseqno',  	width:80,align: 'center' ,
-                	render: function (row) {  
-     					var html ="<b>"+row.bproseqno+"</b>";  
-     					return html;  
- 					}  
-                },
-                { display: '疗程名称', 	name: 'bprojectname', 	width:200,align: 'left'},
-                 { display: '剩余次数', 	name: 'lastcount', 		width:80,align: 'center',
-	            	render: function (row) {  
-     					var html ="";
-     					if(checkNull(row.bprojectname)!="")
-     						html ="0";
-     					if(checkNull(row.lastcount)!="")
-     					  html="<b>"+row.lastcount+"</b>";
-     					return html;  
- 					}  
- 				},
-	          	{ display: '备注', 		name: 'proremark', 		width:200,align: 'left'},
-	          	{ name: 'bprojectno',hide:true, 		width:1},
-	            { name: 'curcostcount', hide:true, 		width:1 },
-	            { name: 'targetlastcount', hide:true, 		width:1 },
-	            { 	name: 'lastamt', 	hide:true, 		width:1},
-	            { name:'yearsz',hide:true, width:1},
-	            { name:'createseqno',hide:true, width:1},
-	            { name:'saledate',hide:true, width:1},
-	            { name:'activinid',hide:true, width:1}
-                ],  pageSize:25, 
-                data:{Rows: null,Total:0},      
-                width: '600',
-                height:'240',
-                enabledEdit: false, checkbox: false,
-                rownumbers: false,usePager: false,
-               // onCheckRow: f_onCheckRow,
-                //onCheckAllRow: f_onCheckAllRow,
-                onAfterEdit: comCostProAfterEdit
-            });
-        	$("#toptoolbarCard").ligerToolBar({ items: [
-      		    { text: '<font color="blue">读卡(E)</font>', click: editCurDetailInfo, img: contextURL+'/common/ligerui/ligerUI/skins/icons/myaccount.gif' }
-            ]
-            });
-            
-										
-									
-      		$("#toptoolbar").ligerToolBar({ items: [
-      		    {text: '微信扫码:&nbsp;<input name="curMconsumeinfo.randomno" id="randomno" onchange="checkRandomno()">'},
-      		    {text: '流水号:&nbsp;<label id="lbBillId"></label>'},
-                { text: '日期:&nbsp;<label id="lbCostDate"></label>' },
-                { text: '时间:&nbsp;<label id="lbCostTime"></label>' },
-                { text: '卡号:&nbsp;<font color="red"><label id="lbCardNo">&nbsp;&nbsp;&nbsp;散客&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></font>'} ,
-                { text: '<input type="radio" id="csersex0" style="border:0px solid #99CC33; font-size:12px;line-height:14px; color:#333;"	name="curMconsumeinfo.csersex" value="0"/>女<input type="radio" id="csersex1" style="border:0px solid #99CC33; font-size:12px;line-height:14px; color:#333;"	name="curMconsumeinfo.csersex" value="1"/>男'} ,
-                { text: '<input type="radio" id="csertype0" style="border:0px solid #99CC33; font-size:12px;line-height:14px; color:#333;"	name="curMconsumeinfo.csertype" value="0"/>新客<input type="radio" id="csertype1" style="border:0px solid #99CC33; font-size:12px;line-height:14px; color:#333;"	name="curMconsumeinfo.csertype" value="1"/>老客'}
-                
-                	 	
-            ]
-            });
-            $("#toptoolbardetial").ligerToolBar({ items: [
-      		     //{ text: '选定消费疗程', click: itemclick_proInfo, img: contextURL+'/common/ligerui/ligerUI/skins/icons/right.gif' },
-	             //{ line: true },
-      		     { text: '<label id="lbBillId">消费年卡</label>',click:openYearCom,img:contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
-	             { text: '收购卡号:&nbsp;<input type="text"  name="shougoucardno" id="shougoucardno" maxlength="20" readonly="true" style="width:120;"  onchange="validateShouGou(this)"/>' },
-	             { line: true },
-	             { text: '团购卡号:&nbsp;<input type="text"  name="curMconsumeinfo.tuangoucardno" id="tuangoucardno" maxlength="20" readonly="true" style="width:100;"  onchange="validateTuangoucardno(this)"/>' },
-	             { line: true },
-	             { text: '条码卡号:&nbsp;<input type="text"  name="curMconsumeinfo.tiaomacardno" id="tiaomacardno" maxlength="20" readonly="true" style="width:100;"  onchange="validateTiaomacardno(this)"/>' },
-	             { line: true },
-	             { text: '抵用券:&nbsp;<input type="text"  name="curMconsumeinfo.diyongcardno" id="diyongcardno" maxlength="20" readonly="true" style="width:100;" onchange="validateDiyongcardno(this)" />' },
-	             { text: '额度:&nbsp;<label id="lbdyAmt"></label>' },
-	             { line: true },
-	             { text: '美容介绍人:&nbsp;<input type="text"  name="curMconsumeinfo.recommendempid" id="recommendempid" maxlength="20" readonly="true" style="width:80;background:#EDF1F8;" onchange="validateRecommendempid(this)" /><input type="text"  name="curMconsumeinfo.recommendempname" id="recommendempname" maxlength="20" readonly="true" style="width:80;background:#EDF1F8;" /> <input type="hidden"  name="curMconsumeinfo.recommendempinid" id="recommendempinid" />' },
-	             //{ text: '总监/首席介绍人:&nbsp;<input type="text"  name="curMconsumeinfo.hairRecommendEmpId" id="hairRecommendEmpId" maxlength="20" readonly="true" style="width:80;background:#EDF1F8;" onchange="validateHairEmpid(this)" /><input type="text"  name="curMconsumeinfo.hairRecommendEmpName" id="hairRecommendEmpName" maxlength="20" readonly="true" style="width:80;background:#EDF1F8;" /> <input type="hidden"  name="curMconsumeinfo.hairRecommendEmpInid" id="hairRecommendEmpInid" />' },
-	             { text: '经理打折&nbsp;<label id="lbdyAmt"></label>', click: managerRate, img: contextURL+'/common/ligerui/ligerUI/skins/icons/lock.gif'  },
-	             //{ text: '3.8节活动&nbsp;<label id="lbdyAmt"></label>', click: manager38Rate, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'  }
-	             //{ text: '7月肩颈活动&nbsp;', click: sevenJJShow, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'  },
-	             //{ text: 'B/C类美容师&nbsp;', click: showTKC, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'  },
-	              //{ text: 'B类美容师&nbsp;', click: showTKB, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'  },
-	              //{ text: '悦碧施体验&nbsp;', click: showYBS, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'  },
-	              { text: '超长项目&nbsp;', click: moreLongHiar, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'  }
-            ]
-            });
-            
-            //长期活动栏
-            $("#toptoolbardetial1").ligerToolBar({ items: [
-                //{ text: '<label id="lbBillId">金超声刀</label>',click:openShowJCSDHD},
-                //{ text: '<label id="lbBillId">拉威提</label>',click:openShowLWTHD},
-                { text: '合作项目疗程消费', click:openShowXMLCHD, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
-                { text: '团购套餐消费', click:openShowGroup, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
-                { text: '接发', click:openConnectHair, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'}
+             commoninfodivdetial_Pro=$("#commoninfodivdetial_Pro").ligerGrid({
+                 columns: [
+                 { display: '疗程号', 	    name: 'bproseqno',  	width:80,align: 'center' ,
+                 	render: function (row) {  
+      					var html ="<b>"+row.bproseqno+"</b>";  
+      					return html;  
+  					}  
+                 },
+                 { display: '疗程名称', 	name: 'bprojectname', 	width:200,align: 'left'},
+                  { display: '剩余次数', 	name: 'lastcount', 		width:80,align: 'center',
+ 	            	render: function (row) {  
+      					var html ="";
+      					if(checkNull(row.bprojectname)!="")
+      						html ="0";
+      					if(checkNull(row.lastcount)!="")
+      					  html="<b>"+row.lastcount+"</b>";
+      					return html;  
+  					}  
+  				},
+ 	          	{ display: '备注', 		name: 'proremark', 		width:200,align: 'left'},
+ 	          	{ name: 'bprojectno',hide:true, 		width:1},
+ 	            { name: 'curcostcount', hide:true, 		width:1 },
+ 	            { name: 'targetlastcount', hide:true, 		width:1 },
+ 	            { 	name: 'lastamt', 	hide:true, 		width:1},
+ 	            { name:'yearsz',hide:true, width:1},
+ 	            { name:'createseqno',hide:true, width:1},
+ 	            { name:'saledate',hide:true, width:1},
+ 	            { name:'activinid',hide:true, width:1}
+                 ],  pageSize:25, 
+                 data:{Rows: null,Total:0},      
+                 width: '600',
+                 height:'240',
+                 enabledEdit: false, checkbox: false,
+                 rownumbers: false,usePager: false,
+                // onCheckRow: f_onCheckRow,
+                 //onCheckAllRow: f_onCheckAllRow,
+                 onAfterEdit: comCostProAfterEdit
+             });
+         	$("#toptoolbarCard").ligerToolBar({ items: [
+       		    { text: '<font color="blue">读卡(E)</font>', click: editCurDetailInfo, img: contextURL+'/common/ligerui/ligerUI/skins/icons/myaccount.gif' }
+             ]
+             });
+             
+ 										
+       		$("#toptoolbar").ligerToolBar({ items: [
+       		    {text: '微信扫码:&nbsp;<input name="curMconsumeinfo.randomno" id="randomno" onchange="checkRandomno()">'},
+       		    {text: '流水号:&nbsp;<label id="lbBillId"></label>'},
+                 { text: '日期:&nbsp;<label id="lbCostDate"></label>' },
+                 { text: '时间:&nbsp;<label id="lbCostTime"></label>' },
+                 { text: '卡号:&nbsp;<font color="red"><label id="lbCardNo">&nbsp;&nbsp;&nbsp;散客&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></font>'} ,
+                 { text: '<input type="radio" id="csersex0" style="border:0px solid #99CC33; font-size:12px;line-height:14px; color:#333;"	name="curMconsumeinfo.csersex" value="0"/>女<input type="radio" id="csersex1" style="border:0px solid #99CC33; font-size:12px;line-height:14px; color:#333;"	name="curMconsumeinfo.csersex" value="1"/>男'} ,
+                 { text: '<input type="radio" id="csertype0" style="border:0px solid #99CC33; font-size:12px;line-height:14px; color:#333;"	name="curMconsumeinfo.csertype" value="0"/>新客<input type="radio" id="csertype1" style="border:0px solid #99CC33; font-size:12px;line-height:14px; color:#333;"	name="curMconsumeinfo.csertype" value="1"/>老客'}
+                 
+                 	 	
+             ]
+             });
+             $("#toptoolbardetial").ligerToolBar({ items: [
+       		     //{ text: '选定消费疗程', click: itemclick_proInfo, img: contextURL+'/common/ligerui/ligerUI/skins/icons/right.gif' },
+ 	             //{ line: true },
+       		     { text: '<label id="lbBillId">消费年卡</label>',click:openYearCom,img:contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
+ 	             { text: '收购卡号:&nbsp;<input type="text"  name="shougoucardno" id="shougoucardno" maxlength="20" readonly="true" style="width:120;"  onchange="validateShouGou(this)"/>' },
+ 	             { line: true },
+ 	             { text: '团购卡号:&nbsp;<input type="text"  name="curMconsumeinfo.tuangoucardno" id="tuangoucardno" maxlength="20" readonly="true" style="width:100;"  onchange="validateTuangoucardno(this)"/>' },
+ 	             { line: true },
+ 	             { text: '条码卡号:&nbsp;<input type="text"  name="curMconsumeinfo.tiaomacardno" id="tiaomacardno" maxlength="20" readonly="true" style="width:100;"  onchange="validateTiaomacardno(this)"/>' },
+ 	             { line: true },
+ 	             { text: '抵用券:&nbsp;<input type="text"  name="curMconsumeinfo.diyongcardno" id="diyongcardno" maxlength="20" readonly="true" style="width:100;" onchange="validateDiyongcardno(this)" />' },
+ 	             { text: '额度:&nbsp;<label id="lbdyAmt"></label>' },
+ 	             { line: true },
+ 	             { text: '美容介绍人:&nbsp;<input type="text"  name="curMconsumeinfo.recommendempid" id="recommendempid" maxlength="20" readonly="true" style="width:80;background:#EDF1F8;" onchange="validateRecommendempid(this)" /><input type="text"  name="curMconsumeinfo.recommendempname" id="recommendempname" maxlength="20" readonly="true" style="width:80;background:#EDF1F8;" /> <input type="hidden"  name="curMconsumeinfo.recommendempinid" id="recommendempinid" />' },
+ 	             //{ text: '总监/首席介绍人:&nbsp;<input type="text"  name="curMconsumeinfo.hairRecommendEmpId" id="hairRecommendEmpId" maxlength="20" readonly="true" style="width:80;background:#EDF1F8;" onchange="validateHairEmpid(this)" /><input type="text"  name="curMconsumeinfo.hairRecommendEmpName" id="hairRecommendEmpName" maxlength="20" readonly="true" style="width:80;background:#EDF1F8;" /> <input type="hidden"  name="curMconsumeinfo.hairRecommendEmpInid" id="hairRecommendEmpInid" />' },
+ 	             { text: '经理打折&nbsp;<label id="lbdyAmt"></label>', click: managerRate, img: contextURL+'/common/ligerui/ligerUI/skins/icons/lock.gif'  },
+ 	             //{ text: '3.8节活动&nbsp;<label id="lbdyAmt"></label>', click: manager38Rate, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'  }
+ 	             //{ text: '7月肩颈活动&nbsp;', click: sevenJJShow, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'  },
+ 	             //{ text: 'B/C类美容师&nbsp;', click: showTKC, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'  },
+ 	              //{ text: 'B类美容师&nbsp;', click: showTKB, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'  },
+ 	              //{ text: '悦碧施体验&nbsp;', click: showYBS, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'  },
+ 	              { text: '超长项目&nbsp;', click: moreLongHiar, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'  }
+             ]
+             });
+             //长期活动栏
+             $("#toptoolbardetial1").ligerToolBar({ items: [
+                 //{ text: '<label id="lbBillId">金超声刀</label>',click:openShowJCSDHD},
+                 //{ text: '<label id="lbBillId">拉威提</label>',click:openShowLWTHD},
+                 { text: '合作项目疗程消费', click:openShowXMLCHD, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
+                 { text: '团购套餐消费', click:openShowGroup, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
+                 { text: '接发', click:openConnectHair, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'}
+             ]});
+             
+             //临时活动栏
+             $("#temptoolbardetial1").ligerToolBar({ items: [
+                { text: '<label id="lbBillId">悦碧施</label>',click:openShowYBSHD,img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
+                /*{ text: '(198)合作项目定位券&nbsp;', click: itemPoint, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
+                { text: '(398)合作项目定位券&nbsp;', click: hzdwq, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
+                { text: '<label>(280)7月头皮活动</label>',click:showScalp, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
+                { text: '<label>(380)7月头皮活动</label>',click:showScalp1, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
+                { text: '<label>烫发套餐</label>',click:permPackage, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
+                { text: '<label>染发套餐</label>',click:dyePackage, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},*/
+                { text: 'C类美容师体验&nbsp;', click: showTK85, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
+                { text: '(150)卡诗天猫活动',click:showKashi, _value:150, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
+                { text: '(300)卡诗天猫活动',click:showKashi, _value:300, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
+                { text: '(600)卡诗天猫活动',click:showKashi, _value:600, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'}
             ]});
-            
-            //临时活动栏
-            $("#temptoolbardetial1").ligerToolBar({ items: [
-               { text: '<label id="lbBillId">悦碧施</label>',click:openShowYBSHD,img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
-               /*{ text: '(198)合作项目定位券&nbsp;', click: itemPoint, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
-               { text: '(398)合作项目定位券&nbsp;', click: hzdwq, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
-               { text: '<label>(280)7月头皮活动</label>',click:showScalp, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
-               { text: '<label>(380)7月头皮活动</label>',click:showScalp1, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
-               { text: '<label>烫发套餐</label>',click:permPackage, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
-               { text: '<label>染发套餐</label>',click:dyePackage, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},*/
-               { text: 'C类美容师体验&nbsp;', click: showTK85, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
-               { text: '(150)卡诗天猫活动',click:showKashi, _value:150, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
-               { text: '(300)卡诗天猫活动',click:showKashi, _value:300, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'},
-               { text: '(600)卡诗天猫活动',click:showKashi, _value:600, img: contextURL+'/common/ligerui/ligerUI/skins/icons/memeber.gif'}
-           ]});
-            var today = new Date();
-        	var endday = new Date("2015/09/01");
-            function itemPoint(){
-            	if(today >= endday){
-            		$.ligerDialog.warn("活动已结束！");
-            		return;
-            	}
-            	 commoninfodivdetial.updateRow(curRecord,{bcsinfotype:1,
-					 csitemno: '4699999',
-					 csitemname: '合作项目体验',
-					 csitemcount: 1,
-					 csunitprice: 198,
-					 csdisprice: 198,
-					 csitemamt:  198,
-					 csdiscount: 1,
-					 cspaymode: 1,
-					 yearinid:'',
-					 csproseqno:0,shareflag:0,costpricetype:8});
-            	 handPayList();
-            }
-            
-            function hzdwq()
-            {
-            	if(today >= endday){
-            		$.ligerDialog.warn("活动已结束！");
-            		return;
-            	}
-            	 commoninfodivdetial.updateRow(curRecord,{bcsinfotype:1,
-					 csitemno: '4699999',
-					 csitemname: '合作项目体验',
-					 csitemcount: 1,
-					 csunitprice: 398,
-					 csdisprice: 398,
-					 csitemamt:  398,
-					 csdiscount: 1,
-					 cspaymode: 1,
-					 yearinid:'',
-					 csproseqno:0,shareflag:0,costpricetype:0});
-            	 
-            	 handPayList();
-            	
-            }
-            
-            function setRowData(paymode, price){
-            	commoninfodivdetial.updateRow(curRecord,{bcsinfotype:1,
-					 csitemno: '3600064',
-					 csitemname: '头皮更新（体验）',
-					 csitemcount: 1,
-					 csunitprice: price,
-					 csdisprice: price,
-					 csitemamt:  price,
-					 csdiscount: 1,
-					 cspaymode: paymode,
-					 yearinid:'',
-					 csproseqno:0,shareflag:0,costpricetype:6});
-            	document.getElementById("wCostItemNo").readOnly="readOnly";
-               	document.getElementById("wCostItemNo").style.background="#EDF1F8";
-           	 	document.getElementById("wCostItemBarNo").readOnly="readOnly";
-            	document.getElementById("wCostItemBarNo").style.background="#EDF1F8";
-            	document.getElementById("wgCostCount").readOnly="readOnly";
-            	document.getElementById("wgCostCount").style.background="#EDF1F8"; 
-               	document.getElementById("wCostPCount").readOnly="readOnly";
-               	document.getElementById("wCostPCount").style.background="#EDF1F8";
-               	document.getElementById("itempay").disabled=true;
-               	handPayList();
-            }
-            //7月头皮活动，散客选择支付方式，读卡则为储蓄账户
-            function confirmScalp(price){
-            	if(checkNull($("#lbCardNo").html())=="散客"){
-            		$.extend($.ligerDefaults.DialogString, {yes:"现金", no:"银行卡"});
-            		$.ligerDialog.confirm('确认 [支付方式] 类型？', function (result){
-    			   	 	if(result){
-    			   	 		setRowData(1, price);
-    					}else{
-    						setRowData(6, price);
-    					}
-    				});
-            		$.extend($.ligerDefaults.DialogString, {yes:"是", no:"否"});
-            	}else{
-            		setRowData(4, price);
-            	}
-            }
-            //（280）7月头皮活动
-            function showScalp(){
-            	if(today >= endday){
-            		$.ligerDialog.warn("活动已结束！");
-            		return;
-            	}
-            	confirmScalp(280);
-            }
-            
-            //（380）7月头皮活动
-            function showScalp1(){
-            	if(today >= endday){
-            		$.ligerDialog.warn("活动已结束！");
-            		return;
-            	}
-            	confirmScalp(380);
-            }
-            
-           $("#toptoolbarserch").ligerToolBar({ items: [
-           		{ text:' <input type="text" name="strSearchBillId" style="width:120" id="strSearchBillId"/>'},
-                { click: searchCurRecord, img: contextURL+'/common/ligerui/ligerUI/skins/icons/search.gif' },	 	
-                { click: editCurRecord,img: contextURL+'/common/ligerui/ligerUI/skins/icons/save-disabled.gif' },	 	
-                { click: viewTicketReport,img: contextURL+'/common/ligerui/ligerUI/skins/icons/print.gif' },
-                { click: loadpadBill,img: contextURL+'/common/ligerui/ligerUI/skins/icons/logout.gif' }
-            ]
-            });
-            $("#autobardetial").ligerToolBar({ items: [	
-            	{text: '<font color="blue">体验:<blue>'},
-                { text:'<label id="lbfastItemt2">设计师</label>(<label id="lbfastItem2"></label>)',click: validateFastItemCheckItem2  },
-               	{ text:'<label id="lbfastItemt3">首席</label>(<label id="lbfastItem3"></label>)',click: validateFastItemCheckItem3 },	 	
-                { text:'<label id="lbfastItemt4">总监</label>(<label id="lbfastItem4"></label>)',click: validateFastItemCheckItem4  },	 	
-                { text:'<label id="lbfastItemt5">创意</label>(<label id="lbfastItem5"></label>)',click: validateFastItemCheckItem5 },	 	
-                { text:'<label id="lbfastItemt6">设计总监</label>(<label id="lbfastItem6"></label>)',click: validateFastItemCheckItem6  },
-                { text:'<label id="lbfastItemt1">儿童</label>(<label id="lbfastItem1"></label>)',click: validateFastItemCheckItem1  }
-              	
-            ]
-            });
-            $("#autobardetialyj").ligerToolBar({ items: [
-           	 	{text: '<font color="blue">洗剪吹:<blue>'},
-                { text:'<label id="lbfastItemt2">设计师</label>(<label id="lbfastItemy2"></label>)',click: validateFastItemCheckItemy2  },
-               	{ text:'<label id="lbfastItemt3">首席</label>(<label id="lbfastItemy3"></label>)',click: validateFastItemCheckItemy3 },	 	
-                { text:'<label id="lbfastItemt4">总监</label>(<label id="lbfastItemy4"></label>)',click: validateFastItemCheckItemy4  },	 	
-                { text:'<label id="lbfastItemt5">创意</label>(<label id="lbfastItemy5"></label>)',click: validateFastItemCheckItemy5 },	 	
-                { text:'<label id="lbfastItemt6">设计总监</label>(<label id="lbfastItemy6"></label>)',click: validateFastItemCheckItemy6  },
-                { text:'<label id="lbfastItemt1">儿童</label>(<label id="lbfastItemy1"></label>)',click: validateFastItemCheckItemy1  }
-            ]
-            });
-            
-             $("#autobardetialyjxc").ligerToolBar({ items: [
-           	 	{text: '<font color="blue">洗吹:&nbsp;&nbsp;&nbsp<blue>'},
-           		{ text:'<label id="lbfastItemt2">设计师</label>(<label id="lbfastItemy2xc"></label>)',click: validateFastItemCheckItemy2_XC  },
-               	{ text:'<label id="lbfastItemt3">首席</label>(<label id="lbfastItemy3xc"></label>)',click: validateFastItemCheckItemy3_XC },	 	
-                { text:'<label id="lbfastItemt4">总监</label>(<label id="lbfastItemy4xc"></label>)',click: validateFastItemCheckItemy4_XC  },	 	
-                { text:'<label id="lbfastItemt5">创意</label>(<label id="lbfastItemy5xc"></label>)',click: validateFastItemCheckItemy5_XC },
-				{ text:'<label id="lbfastItemt6">特价</label>(<label id="lbfastItemy6xc"></label>)',click: validateFastItemCheckItemy6_XC },
-				{ text:'<label id="lbfastItemt6">特价</label>(<label id="lbfastItemy7xc"></label>)',click: validateFastItemCheckItemy7_XC }
-            ]
-            });
-            
-            $("#autoxcCost1").ligerToolBar({ items: [
-           	 	{ text:'设计师洗吹[<label id="lbSpecialItemyxc1"></label>]',click: validateSpecialItemCheckItem_XC1}
-               ]
-            });
-            $("#autoxcCost2").ligerToolBar({ items: [
-           	 	{ text:'首席洗吹[<label id="lbSpecialItemyxc2"></label>]',click: validateSpecialItemCheckItem_XC2}
-               ]
-            });
-            $("#autoxcCost3").ligerToolBar({ items: [
-           	 	{ text:'总监洗吹[<label id="lbSpecialItemyxc3"></label>]',click: validateSpecialItemCheckItem_XC3}
-               ]
-            });
-            $("#autoxcCost4").ligerToolBar({ items: [
-           	 	{ text:'创意总监洗吹[<label id="lbSpecialItemyxc4"></label>]',click: validateSpecialItemCheckItem_XC4}
-               ]
-            });
-            $("#autoxcCost5").ligerToolBar({ items: [
-           	 	{ text:'设计师洗剪吹[<label id="lbSpecialItemyxc5"></label>]',click: validateSpecialItemCheckItem_XC5}
-               ]
-            });
-            $("#autoxcCost6").ligerToolBar({ items: [
-           	 	{ text:'首席洗剪吹[<label id="lbSpecialItemyxc6"></label>]',click: validateSpecialItemCheckItem_XC6}
-               ]
-            });
-            $("#autoxcCost7").ligerToolBar({ items: [
-           	 	{ text:'总监洗剪吹[<label id="lbSpecialItemyxc7"></label>]',click: validateSpecialItemCheckItem_XC7}
-               ]
-            });
-            $("#autoxcCost8").ligerToolBar({ items: [
-           	 	{ text:'创意总监洗剪吹(<label id="lbSpecialItemyxc8"></label>)',click: validateSpecialItemCheckItem_XC8}
-               ]
-            });
-            $("#autoxcCost9").ligerToolBar({ items: [
-           	 	{ text:'店长洗剪吹(<label id="lbSpecialItemyxc9"></label>)',click: validateSpecialItemCheckItem_XC9}
-               ]
-            });
-           //---------------------------------------------右侧面板营业分析 start
-           /*	$("#fastTab").ligerTab();
-            	fastTab = $("#fastTab").ligerGetTabManager();
-            
-				$("#dataAnalysis").ligerTab({ onBeforeSelectTabItem: function (tabid)
-	            {
-	                dataAnalysis_before( tabid);
-	            }, onAfterSelectTabItem: function (tabid)
-	            {
-	                dataAnalysis_after( tabid);
-	            } 
-	            });
-	      
-				$(".datepicker").datePicker({
-					inline:true,
-					selectMultiple:false	
-					
-				}); */
-				document.getElementById("lbfastItem1").innerHTML=eval("(parent.dSp074Price)");
-				document.getElementById("lbfastItem2").innerHTML=eval("(parent.dSp075Price)");
-				document.getElementById("lbfastItem3").innerHTML=eval("(parent.dSp076Price)");
-				document.getElementById("lbfastItem4").innerHTML=eval("(parent.dSp077Price)");
-				document.getElementById("lbfastItem5").innerHTML=eval("(parent.dSp078Price)");
-				document.getElementById("lbfastItem6").innerHTML=eval("(parent.dSp079Price)");
-				
-				document.getElementById("lbfastItemy1").innerHTML=eval("(parent.dSp081Price)");
-				document.getElementById("lbfastItemy2").innerHTML=eval("(parent.dSp082Price)");
-				document.getElementById("lbfastItemy3").innerHTML=eval("(parent.dSp083Price)");
-				document.getElementById("lbfastItemy4").innerHTML=eval("(parent.dSp084Price)");
-				document.getElementById("lbfastItemy5").innerHTML=eval("(parent.dSp085Price)");
-				document.getElementById("lbfastItemy6").innerHTML=eval("(parent.dSp086Price)");
-				
-				document.getElementById("lbfastItemy2xc").innerHTML=eval("(parent.dSp087Price)");
-				document.getElementById("lbfastItemy3xc").innerHTML=eval("(parent.dSp088Price)");
-				document.getElementById("lbfastItemy4xc").innerHTML=eval("(parent.dSp089Price)");
-				document.getElementById("lbfastItemy5xc").innerHTML=eval("(parent.dSp090Price)");
-				document.getElementById("lbfastItemy6xc").innerHTML=eval("(parent.dSp091Price)");
-				document.getElementById("lbfastItemy7xc").innerHTML=eval("(parent.dSp092Price)");
-				
-          	$("#pageloading").hide(); 
-          
-         	addConsumeInfo();
-         	addProRecord_cardInfo();
-         	addProRecord();
-         	addProRecord_payInfo();
-         	addProRecord_padInfo();
-   		}catch(e){alert(e.message);}
-    });
-    
+             var today = new Date();
+         	var endday = new Date("2015/09/01");
+             function itemPoint(){
+             	if(today >= endday){
+             		$.ligerDialog.warn("活动已结束！");
+             		return;
+             	}
+             	 commoninfodivdetial.updateRow(curRecord,{bcsinfotype:1,
+ 					 csitemno: '4699999',
+ 					 csitemname: '合作项目体验',
+ 					 csitemcount: 1,
+ 					 csunitprice: 198,
+ 					 csdisprice: 198,
+ 					 csitemamt:  198,
+ 					 csdiscount: 1,
+ 					 cspaymode: 1,
+ 					 yearinid:'',
+ 					 csproseqno:0,shareflag:0,costpricetype:8});
+             	 handPayList();
+             }
+             
+             function hzdwq()
+             {
+             	if(today >= endday){
+             		$.ligerDialog.warn("活动已结束！");
+             		return;
+             	}
+             	 commoninfodivdetial.updateRow(curRecord,{bcsinfotype:1,
+ 					 csitemno: '4699999',
+ 					 csitemname: '合作项目体验',
+ 					 csitemcount: 1,
+ 					 csunitprice: 398,
+ 					 csdisprice: 398,
+ 					 csitemamt:  398,
+ 					 csdiscount: 1,
+ 					 cspaymode: 1,
+ 					 yearinid:'',
+ 					 csproseqno:0,shareflag:0,costpricetype:0});
+             	 
+             	 handPayList();
+             	
+             }
+             
+             function setRowData(paymode, price){
+             	commoninfodivdetial.updateRow(curRecord,{bcsinfotype:1,
+ 					 csitemno: '3600064',
+ 					 csitemname: '头皮更新（体验）',
+ 					 csitemcount: 1,
+ 					 csunitprice: price,
+ 					 csdisprice: price,
+ 					 csitemamt:  price,
+ 					 csdiscount: 1,
+ 					 cspaymode: paymode,
+ 					 yearinid:'',
+ 					 csproseqno:0,shareflag:0,costpricetype:6});
+             	document.getElementById("wCostItemNo").readOnly="readOnly";
+                	document.getElementById("wCostItemNo").style.background="#EDF1F8";
+            	 	document.getElementById("wCostItemBarNo").readOnly="readOnly";
+             	document.getElementById("wCostItemBarNo").style.background="#EDF1F8";
+             	document.getElementById("wgCostCount").readOnly="readOnly";
+             	document.getElementById("wgCostCount").style.background="#EDF1F8"; 
+                	document.getElementById("wCostPCount").readOnly="readOnly";
+                	document.getElementById("wCostPCount").style.background="#EDF1F8";
+                	document.getElementById("itempay").disabled=true;
+                	handPayList();
+             }
+             //7月头皮活动，散客选择支付方式，读卡则为储蓄账户
+             function confirmScalp(price){
+             	if(checkNull($("#lbCardNo").html())=="散客"){
+             		$.extend($.ligerDefaults.DialogString, {yes:"现金", no:"银行卡"});
+             		$.ligerDialog.confirm('确认 [支付方式] 类型？', function (result){
+     			   	 	if(result){
+     			   	 		setRowData(1, price);
+     					}else{
+     						setRowData(6, price);
+     					}
+     				});
+             		$.extend($.ligerDefaults.DialogString, {yes:"是", no:"否"});
+             	}else{
+             		setRowData(4, price);
+             	}
+             }
+             //（280）7月头皮活动
+             function showScalp(){
+             	if(today >= endday){
+             		$.ligerDialog.warn("活动已结束！");
+             		return;
+             	}
+             	confirmScalp(280);
+             }
+             
+             //（380）7月头皮活动
+             function showScalp1(){
+             	if(today >= endday){
+             		$.ligerDialog.warn("活动已结束！");
+             		return;
+             	}
+             	confirmScalp(380);
+             }
+             
+            $("#toptoolbarserch").ligerToolBar({ items: [
+            		{ text:' <input type="text" name="strSearchBillId" style="width:120" id="strSearchBillId"/>'},
+                 { click: searchCurRecord, img: contextURL+'/common/ligerui/ligerUI/skins/icons/search.gif' },	 	
+                 { click: editCurRecord,img: contextURL+'/common/ligerui/ligerUI/skins/icons/save-disabled.gif' },	 	
+                 { click: viewTicketReport,img: contextURL+'/common/ligerui/ligerUI/skins/icons/print.gif' },
+                 { click: loadpadBill,img: contextURL+'/common/ligerui/ligerUI/skins/icons/logout.gif' }
+             ]
+             });
+             $("#autobardetial").ligerToolBar({ items: [	
+             	{text: '<font color="blue">体验:<blue>'},
+                 { text:'<label id="lbfastItemt2">设计师</label>(<label id="lbfastItem2"></label>)',click: validateFastItemCheckItem2  },
+                	{ text:'<label id="lbfastItemt3">首席</label>(<label id="lbfastItem3"></label>)',click: validateFastItemCheckItem3 },	 	
+                 { text:'<label id="lbfastItemt4">总监</label>(<label id="lbfastItem4"></label>)',click: validateFastItemCheckItem4  },	 	
+                 { text:'<label id="lbfastItemt5">创意</label>(<label id="lbfastItem5"></label>)',click: validateFastItemCheckItem5 },	 	
+                 { text:'<label id="lbfastItemt6">设计总监</label>(<label id="lbfastItem6"></label>)',click: validateFastItemCheckItem6  },
+                 { text:'<label id="lbfastItemt1">儿童</label>(<label id="lbfastItem1"></label>)',click: validateFastItemCheckItem1  }
+               	
+             ]
+             });
+             $("#autobardetialyj").ligerToolBar({ items: [
+            	 	{text: '<font color="blue">洗剪吹:<blue>'},
+                 { text:'<label id="lbfastItemt2">设计师</label>(<label id="lbfastItemy2"></label>)',click: validateFastItemCheckItemy2  },
+                	{ text:'<label id="lbfastItemt3">首席</label>(<label id="lbfastItemy3"></label>)',click: validateFastItemCheckItemy3 },	 	
+                 { text:'<label id="lbfastItemt4">总监</label>(<label id="lbfastItemy4"></label>)',click: validateFastItemCheckItemy4  },	 	
+                 { text:'<label id="lbfastItemt5">创意</label>(<label id="lbfastItemy5"></label>)',click: validateFastItemCheckItemy5 },	 	
+                 { text:'<label id="lbfastItemt6">设计总监</label>(<label id="lbfastItemy6"></label>)',click: validateFastItemCheckItemy6  },
+                 { text:'<label id="lbfastItemt1">儿童</label>(<label id="lbfastItemy1"></label>)',click: validateFastItemCheckItemy1  }
+             ]
+             });
+             
+              $("#autobardetialyjxc").ligerToolBar({ items: [
+            	 	{text: '<font color="blue">洗吹:&nbsp;&nbsp;&nbsp<blue>'},
+            		{ text:'<label id="lbfastItemt2">设计师</label>(<label id="lbfastItemy2xc"></label>)',click: validateFastItemCheckItemy2_XC  },
+                	{ text:'<label id="lbfastItemt3">首席</label>(<label id="lbfastItemy3xc"></label>)',click: validateFastItemCheckItemy3_XC },	 	
+                 { text:'<label id="lbfastItemt4">总监</label>(<label id="lbfastItemy4xc"></label>)',click: validateFastItemCheckItemy4_XC  },	 	
+                 { text:'<label id="lbfastItemt5">创意</label>(<label id="lbfastItemy5xc"></label>)',click: validateFastItemCheckItemy5_XC },
+ 				{ text:'<label id="lbfastItemt6">特价</label>(<label id="lbfastItemy6xc"></label>)',click: validateFastItemCheckItemy6_XC },
+ 				{ text:'<label id="lbfastItemt6">特价</label>(<label id="lbfastItemy7xc"></label>)',click: validateFastItemCheckItemy7_XC }
+             ]
+             });
+             
+             $("#autoxcCost1").ligerToolBar({ items: [
+            	 	{ text:'设计师洗吹[<label id="lbSpecialItemyxc1"></label>]',click: validateSpecialItemCheckItem_XC1}
+                ]
+             });
+             $("#autoxcCost2").ligerToolBar({ items: [
+            	 	{ text:'首席洗吹[<label id="lbSpecialItemyxc2"></label>]',click: validateSpecialItemCheckItem_XC2}
+                ]
+             });
+             $("#autoxcCost3").ligerToolBar({ items: [
+            	 	{ text:'总监洗吹[<label id="lbSpecialItemyxc3"></label>]',click: validateSpecialItemCheckItem_XC3}
+                ]
+             });
+             $("#autoxcCost4").ligerToolBar({ items: [
+            	 	{ text:'创意总监洗吹[<label id="lbSpecialItemyxc4"></label>]',click: validateSpecialItemCheckItem_XC4}
+                ]
+             });
+             $("#autoxcCost5").ligerToolBar({ items: [
+            	 	{ text:'设计师洗剪吹[<label id="lbSpecialItemyxc5"></label>]',click: validateSpecialItemCheckItem_XC5}
+                ]
+             });
+             $("#autoxcCost6").ligerToolBar({ items: [
+            	 	{ text:'首席洗剪吹[<label id="lbSpecialItemyxc6"></label>]',click: validateSpecialItemCheckItem_XC6}
+                ]
+             });
+             $("#autoxcCost7").ligerToolBar({ items: [
+            	 	{ text:'总监洗剪吹[<label id="lbSpecialItemyxc7"></label>]',click: validateSpecialItemCheckItem_XC7}
+                ]
+             });
+             $("#autoxcCost8").ligerToolBar({ items: [
+            	 	{ text:'创意总监洗剪吹(<label id="lbSpecialItemyxc8"></label>)',click: validateSpecialItemCheckItem_XC8}
+                ]
+             });
+             $("#autoxcCost9").ligerToolBar({ items: [
+            	 	{ text:'店长洗剪吹(<label id="lbSpecialItemyxc9"></label>)',click: validateSpecialItemCheckItem_XC9}
+                ]
+             });
+            //---------------------------------------------右侧面板营业分析 start
+            /*	$("#fastTab").ligerTab();
+             	fastTab = $("#fastTab").ligerGetTabManager();
+             
+ 				$("#dataAnalysis").ligerTab({ onBeforeSelectTabItem: function (tabid)
+ 	            {
+ 	                dataAnalysis_before( tabid);
+ 	            }, onAfterSelectTabItem: function (tabid)
+ 	            {
+ 	                dataAnalysis_after( tabid);
+ 	            } 
+ 	            });
+ 	      
+ 				$(".datepicker").datePicker({
+ 					inline:true,
+ 					selectMultiple:false	
+ 					
+ 				}); */
+ 				document.getElementById("lbfastItem1").innerHTML=eval("(parent.dSp074Price)");
+ 				document.getElementById("lbfastItem2").innerHTML=eval("(parent.dSp075Price)");
+ 				document.getElementById("lbfastItem3").innerHTML=eval("(parent.dSp076Price)");
+ 				document.getElementById("lbfastItem4").innerHTML=eval("(parent.dSp077Price)");
+ 				document.getElementById("lbfastItem5").innerHTML=eval("(parent.dSp078Price)");
+ 				document.getElementById("lbfastItem6").innerHTML=eval("(parent.dSp079Price)");
+ 				
+ 				document.getElementById("lbfastItemy1").innerHTML=eval("(parent.dSp081Price)");
+ 				document.getElementById("lbfastItemy2").innerHTML=eval("(parent.dSp082Price)");
+ 				document.getElementById("lbfastItemy3").innerHTML=eval("(parent.dSp083Price)");
+ 				document.getElementById("lbfastItemy4").innerHTML=eval("(parent.dSp084Price)");
+ 				document.getElementById("lbfastItemy5").innerHTML=eval("(parent.dSp085Price)");
+ 				document.getElementById("lbfastItemy6").innerHTML=eval("(parent.dSp086Price)");
+ 				
+ 				document.getElementById("lbfastItemy2xc").innerHTML=eval("(parent.dSp087Price)");
+ 				document.getElementById("lbfastItemy3xc").innerHTML=eval("(parent.dSp088Price)");
+ 				document.getElementById("lbfastItemy4xc").innerHTML=eval("(parent.dSp089Price)");
+ 				document.getElementById("lbfastItemy5xc").innerHTML=eval("(parent.dSp090Price)");
+ 				document.getElementById("lbfastItemy6xc").innerHTML=eval("(parent.dSp091Price)");
+ 				document.getElementById("lbfastItemy7xc").innerHTML=eval("(parent.dSp092Price)");
+           	$("#pageloading").hide();
+          	addConsumeInfo();
+          	addProRecord_cardInfo();
+          	addProRecord();
+          	addProRecord_payInfo();
+          	addProRecord_padInfo();
+    		}catch(e){alert(e.message);}
+     });
     function changeWidth()
     {
     
@@ -902,13 +890,14 @@
     		if(responsetext.lsDconsumeinfos!=null && responsetext.lsDconsumeinfos.length>0)
 	   		{
 	   			commoninfodivdetial.options.data=$.extend(true, {},{Rows: responsetext.lsDconsumeinfos,Total: responsetext.lsDconsumeinfos.length});
-            	commoninfodivdetial.loadData(true);  
-            	commoninfodivdetial.select(0);          	
+            	commoninfodivdetial.loadData();
+            	loadselect();
+            	//commoninfodivdetial.select(0);          	
 	   		}
 	   		else
 	   		{
 	   			commoninfodivdetial.options.data=$.extend(true, {},{Rows: null,Total:0});
-            	commoninfodivdetial.loadData(true);  
+            	commoninfodivdetial.loadData();  
 	   		}
     		/*if(responsetext.lsBillState!=null && responsetext.lsBillState.length>0)
     		{
@@ -916,9 +905,9 @@
     			commoninfodivdetial_WX.loadData(true);  
     			commoninfodivdetial_WX.select(0);
     		}*/
-	   		initDetialGrid();
+	   		//initDetialGrid();
 	   		commoninfodivdetial_Pro.options.data=$.extend(true, {},{Rows: null,Total:0});
-            commoninfodivdetial_Pro.loadData(true);  
+            commoninfodivdetial_Pro.loadData(true);
             addProRecord();
 	        loadCurMaster(responsetext.curMconsumeinfo);
 	        $("#cardphone").val("");
@@ -964,15 +953,18 @@
 			document.getElementById("paramSp016").value=responsetext.paramSp016;
 			if(document.getElementById("paramSp016").value=="1")
 			{
+				if(!typeof($("#wCostCount")).val()==='undefined'){
 				document.getElementById("wCostCount").readOnly=true;
 				document.getElementById("wCostCount").style.background="#EDF1F8";
+				}
 			}
 			else
 			{
-				document.getElementById("wCostCount").readOnly=false;
-				document.getElementById("wCostCount").style.background="#FFFFFF";
+				if(!typeof($("#wCostCount")).val()==='undefined'){
+					document.getElementById("wCostCount").readOnly=false;
+					document.getElementById("wCostCount").style.background="#FFFFFF";
+				}
 			}
-			
 			if(checkNull(responsetext.paramSp105)*1==1)
 			{
 				document.getElementById("recommendempid").readOnly="";
@@ -1078,11 +1070,14 @@
     }
     function editCurDetailInfo()
     {
+    	alert("1");
     	if(document.getElementById("paramSp108").value*1==0)
     	{
 	    	document.getElementById("sumKeepBalance").value=0;
 	    	var CardControl=parent.document.getElementById("CardCtrl");
+	    	alert("2");
 			CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+			alert("3");
 			var cardNo=CardControl.ReadCard();
 			if(cardNo!="")
 			{
@@ -2181,18 +2176,23 @@ function showTextByinfoType(rowdata,readType)
 		initDetialGrid();
 		curEmpManger=null;
 		curitemManger=null;
-		commoninfodivdetial.select(detiallength*1+1);
+		loadselect();
+		//commoninfodivdetial.select(detiallength*1+1);
 		initFastGrid();
     }
     
     function initFastGrid()
     {
+    	document.getElementById("wCostFirstEmpNo").value="";
     	document.getElementById("wCostItemNo").value="";
     	document.getElementById("wCostPCount").value="";
     	document.getElementById("wCostItemBarNo").value="";
-    	document.getElementById("wCostCount").value="";
+    	if(!typeof($("#wCostCount")).val()==='undefined'){
+    		document.getElementById("wCostCount").value="";
+    		document.getElementById("wCostCount").readOnly="";
+    		document.getElementById("wCostCount").style.background="#FFFFFF";
+    	}
     	document.getElementById("itempay").value="";
-    	document.getElementById("wCostFirstEmpNo").value="";
     	document.getElementById("wCostFirstEmptype").value="2";
     	document.getElementById("wCostFirstEmpshare").value="";
     	document.getElementById("wCostSecondEmpNo").value="";
@@ -2204,7 +2204,6 @@ function showTextByinfoType(rowdata,readType)
     	
     	document.getElementById("wCostItemNo").readOnly="";
     	document.getElementById("wCostItemNo").readOnly="";
-    	document.getElementById("wCostCount").readOnly="";
     	document.getElementById("wCostItemBarNo").readOnly="";
     	document.getElementById("wCostFirstEmpshare").readOnly="";
     	document.getElementById("wCostSecondEmpshare").readOnly="";
@@ -2212,7 +2211,6 @@ function showTextByinfoType(rowdata,readType)
     	
     	document.getElementById("wCostItemNo").style.background="#FFFFFF";
     	document.getElementById("wCostItemNo").style.background="#FFFFFF";
-    	document.getElementById("wCostCount").style.background="#FFFFFF";
     	document.getElementById("wCostItemBarNo").style.background="#FFFFFF";
     	document.getElementById("wCostFirstEmpshare").style.background="#FFFFFF";
     	document.getElementById("wCostSecondEmpshare").style.background="#FFFFFF";
@@ -2913,6 +2911,8 @@ function showTextByinfoType(rowdata,readType)
 			var responseMethod="searchCurRecordMessage";	
 			var params="strSearchBillId="+document.getElementById("strSearchBillId").value;			
 			sendRequestForParams_p(requestUrl,responseMethod,params );
+		}else{
+			$.ligerDialog.warn("查询条件错误！");
 		}
 	}
 	function searchCurRecordMessage(request)
@@ -6934,7 +6934,6 @@ function showTextByinfoType(rowdata,readType)
     			});
     		}
     	});
-    	
 		validateCscardno(document.getElementById("cscardno"));
     }
     
@@ -7308,4 +7307,8 @@ function showTextByinfoType(rowdata,readType)
 		    	showDialogKashi.close();
 		    	isAddFlag=true;
 			}},{text:'取消', onclick:function(item, dialog){dialog.close();}}]});
+    }
+    
+    function loadselect(){
+    	setTimeout(function(){commoninfodivdetial.select(0);}, 1000 )
     }
