@@ -1270,7 +1270,7 @@
     			document.getElementById("enablecompany").value=(checkNull(curGoodsinfo.enablecompany)==""?"0":checkNull(curGoodsinfo.enablecompany));
     			document.getElementById("goodscompany").value=checkNull(curGoodsinfo.goodscompany);
     			document.getElementById("enablebarcode").value=(checkNull(curGoodsinfo.enablebarcode)==""?"1":checkNull(curGoodsinfo.enablebarcode));
-    			
+    			document.getElementById("monthmaxorder").value=checkNull(curGoodsinfo.monthmaxorder);
 	   		}
 	   		
 	   		
@@ -1308,6 +1308,7 @@
     	document.getElementById("enablecompany").disabled=true;
     	document.getElementById("goodscompany").readOnly="readOnly";
     	document.getElementById("enablebarcode").disabled=true;
+    	document.getElementById("monthmaxorder").readOnly="readOnly";
     }
     function enableGoodsInfo()
     {
@@ -1340,6 +1341,7 @@
     	document.getElementById("enablecompany").disabled=false;
     	document.getElementById("goodscompany").readOnly="";
     	document.getElementById("enablebarcode").disabled=false;
+    	document.getElementById("monthmaxorder").readOnly="";
     }
     function clearGoodsInfo()
     {
@@ -1378,6 +1380,7 @@
     			document.getElementById("stopmark").value="";
     			document.getElementById("bindgoodsno").value="";
     			document.getElementById("goodscompany").value="";
+    			document.getElementById("monthmaxorder").value="";
     }
 
     function addGoodsRecord()

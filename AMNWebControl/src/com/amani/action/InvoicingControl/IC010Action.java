@@ -268,11 +268,13 @@ public class IC010Action extends AMN_ModuleAction{
 			this.lsDgoodssendinfo=this.ic010Service.getDataTool().loadDTOList(strJsonParam, Dgoodssendinfo.class);
 			if(lsDgoodssendinfo!=null && lsDgoodssendinfo.size()>0)
 			{
+				List<Dgoodssendinfo> listSendSeqno=ic010Service.findSendseqno(curMgoodssendinfo.getId().getSendcompid(),curMgoodssendinfo.getId().getSendbillid());
 				for(int i=0;i<lsDgoodssendinfo.size();i++)
 				{
 					if(!CommonTool.FormatString(lsDgoodssendinfo.get(i).getSendgoodsno()).equals(""))
 					{
-						lsDgoodssendinfo.get(i).setId(new DgoodssendinfoId(curMgoodssendinfo.getId().getSendcompid(),curMgoodssendinfo.getId().getSendbillid(),i*1.0));
+						double sendseqno=listSendSeqno.get(i).getId().getSendseqno();
+						lsDgoodssendinfo.get(i).setId(new DgoodssendinfoId(curMgoodssendinfo.getId().getSendcompid(),curMgoodssendinfo.getId().getSendbillid(),sendseqno));
 					}
 				}
 				

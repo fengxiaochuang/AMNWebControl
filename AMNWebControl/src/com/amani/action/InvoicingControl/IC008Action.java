@@ -1,9 +1,13 @@
 package com.amani.action.InvoicingControl;
 
 import java.math.BigDecimal;
+import java.sql.ResultSet;
 import java.util.ArrayList;
-
+import java.util.Calendar;
 import java.util.List;
+
+
+
 
 
 import org.apache.struts2.convention.annotation.Action;
@@ -15,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import com.amani.action.AMN_ModuleAction;
-
+import com.amani.action.AnlyResultSet;
 import com.amani.model.Compwarehouse;
 import com.amani.model.Dgoodsorderinfo;
 import com.amani.model.DgoodsorderinfoId;
@@ -74,6 +78,13 @@ public class IC008Action extends AMN_ModuleAction{
     private String strEndBarNo;
     private int handtype;  // 1 复合  2	取消复合
     private BigDecimal curgoodsstock;  //当前库存量
+//    
+    private Integer monthMaxOrderCount;  //已经下单的数量
+    private String goodNO;   //产品编号
+    private Integer currentOrderCount;//当前下单的数量
+    
+    
+    
 	public BigDecimal getCurgoodsstock() {
 		return curgoodsstock;
 	}
@@ -732,5 +743,51 @@ public class IC008Action extends AMN_ModuleAction{
 		this.strCurDate = strCurDate;
 	}
 
+	
+	public Integer getMonthMaxOrderCount() {
+		return monthMaxOrderCount;
+	}
+	public void setMonthMaxOrderCount(Integer monthMaxOrderCount) {
+		this.monthMaxOrderCount = monthMaxOrderCount;
+	}
+	public String getGoodNO() {
+		return goodNO;
+	}
+	public void setGoodNO(String goodNO) {
+		this.goodNO = goodNO;
+	}
+	
 
+	public Integer getCurrentOrderCount() {
+		return currentOrderCount;
+	}
+	public void setCurrentOrderCount(Integer currentOrderCount) {
+		this.currentOrderCount = currentOrderCount;
+	}
+	/**
+	  * 根据产品编号获取该产品这月已经下单量
+	  * @param goodsno
+	  * @return
+	  */
+	@Action(value = "maxNumOrder",  results = { 
+			 @Result(name = "load_success", type = "json"),
+			 @Result(name = "load_failure", type = "json")	   })
+	 public String maxNumOrder(){
+		 Calendar da=Calendar.getInstance();
+		 String dayValue="";
+		 int day=da.get(Calendar.MONTH)+1;//由于月份是从0开始的所以加1
+		 if(day<10){
+			 dayValue="0"+day;
+		 }
+		 
+		 String yearMonth=(da.get(Calendar.YEAR)+"")+dayValue;
+		 
+		 monthMaxOrderCount=this.ic008Service.getMaxNumOrder(yearMonth, goodNO);
+		if(monthMaxOrderCount==null || "".equals(monthMaxOrderCount)){
+		 monthMaxOrderCount=0;
+		}
+		 
+		 
+		return SystemFinal.LOAD_SUCCESS;
+	 }
 }

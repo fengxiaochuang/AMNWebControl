@@ -48,20 +48,11 @@ public class AC022Action extends AMN_ModuleAction{
 					temp.add(project);
 				}
 			}
-			lsProjectinfo = temp;
-			
-			/*this.lsProjectinfo=this.ac022Service.getDataTool().loadProjectinfoByCompId(strCurCompId,1);
-			List<Projectinfo> temp = new ArrayList<Projectinfo>();
-			for (Projectinfo project : lsProjectinfo) {//过滤不是疗程的项目
-				if(CommonTool.FormatInteger(project.getPrjsaletype())==2){
-					temp.add(project);
-				}
-			}
-			lsProjectinfo = temp;*/
+			this.lsProjectinfo = temp;
 		}
 		catch(Exception e)
 		{
-//			logger.error("AC022Action.java loadInfo  error:" + e);
+			logger.error("AC022Action.java loadInfo  error:" + e);
 		}
 		return SystemFinal.LOAD_SUCCESS;
 	}

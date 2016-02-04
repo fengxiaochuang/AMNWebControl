@@ -900,6 +900,7 @@
 							document.getElementById("wgoodssource").value=checkNull(parent.lsGoodsinfo[i].goodsappsource);
 							document.getElementById("wminordercount").value=checkNull(parent.lsGoodsinfo[i].minordercount);
 							document.getElementById("wmaxordercount").value=checkNull(parent.lsGoodsinfo[i].goodsbarno);
+							document.getElementById("monthmaxorder").value=checkNull(parent.lsGoodsinfo[i].monthmaxorder);
 							document.getElementById("goodspricetype").value=checkNull(parent.lsGoodsinfo[i].goodspricetype);
 							document.getElementById("winsergoodscount").value=0;
 							document.getElementById("winsergoodscount").focus();
@@ -935,6 +936,7 @@
 									document.getElementById("wgoodssource").value=checkNull(parent.lsGoodsinfo[i].goodsappsource);
 									document.getElementById("wminordercount").value=checkNull(parent.lsGoodsinfo[i].minordercount);
 									document.getElementById("wmaxordercount").value=checkNull(parent.lsGoodsinfo[i].goodsbarno);
+									document.getElementById("monthmaxorder").value=checkNull(parent.lsGoodsinfo[i].monthmaxorder);
 									document.getElementById("winsergoodscount").value=0;
 									goodscrentwareno=checkNull(parent.lsGoodsinfo[i].goodswarehouse);
 									document.getElementById("winsergoodscount").focus();
@@ -995,7 +997,7 @@
 		
 		function loadGoodsGrid(obj)
 		{
-			
+		    
 			if(document.getElementById("winsergoodsno").value=="")
 			{
 				$.ligerDialog.warn("请确认入库产品编号!");
@@ -1037,6 +1039,7 @@
 				obj.select();
 				return;
 			}
+			
 			try
 			{
 				
@@ -1062,10 +1065,28 @@
 					$.ligerDialog.error("该产品不能大于系统设定的最大订货量!");
 					return;
 				}
-				loadGoodsBarCordMessage();
 				
+				var requestUrl ="ic008/maxNumOrder.action";
+		        var params="goodNO="+$("#winsergoodsno").val()+"&currentOrderCount="+obj.value;
+				var responseMethod="maxNumOrderMethod";		
+				sendRequestForParams_p(requestUrl,responseMethod,params );
+
 			}catch(e){alert(e.message);}
 		}
+		function maxNumOrderMethod(request){
+			  var responsetext = eval("(" + request.responseText + ")");
+		      var monthMaxOrderCount=responsetext.monthMaxOrderCount;  //查询每月已经下单的数量
+		      var monthmaxorder=$("#monthmaxorder").val(); //设定每月最大值
+		      var currentOrderCount=responsetext.currentOrderCount;
+		      if(checkNull(monthmaxorder)!=""&&(currentOrderCount+monthMaxOrderCount) > monthmaxorder*1 ){
+					$.ligerDialog.error("该产品不能大于系统设定的每月订单量限制!");
+					return;
+				}
+		  	loadGoodsBarCordMessage();
+		}
+		
+		
+		
 		
 		function loadGoodsBarCordMessage()
 	    {

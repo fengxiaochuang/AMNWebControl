@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import com.amani.action.AMN_ModuleAction;
+import com.amani.model.SchoolCreditDetail;
 import com.amani.model.SchoolInfo;
 import com.amani.service.SchoolControl.SCC001Service;
 import com.amani.tools.SystemFinal;
@@ -29,6 +30,9 @@ public class SCC001Action extends AMN_ModuleAction implements ModelDriven<School
 	private SCC001Service scc001Service;
 	private List<SchoolInfo> listSet;
 	private SchoolInfo schoolInfo = new SchoolInfo();
+	private List<SchoolCreditDetail>  schoolCreditDetailList;
+	
+	
 	
 	@Action(value="load", results={@Result(name="load_success", type="json")})
 	public String load(){
@@ -64,6 +68,21 @@ public class SCC001Action extends AMN_ModuleAction implements ModelDriven<School
 		}
 		strMessage = sysStatus==0 ? SystemFinal.POST_FAILURE_MSG : SystemFinal.POST_SUCCESS_MSG;
 		return SystemFinal.POST_SUCCESS;
+	}
+	
+	/**
+	 * 查询详情
+	 * @return
+	 */
+	@Action(value="findDetail", results={@Result(name="load_success", type="json")})
+	public String findDetail(){
+		try{
+			
+			 schoolCreditDetailList=scc001Service.getCreditDetail(schoolInfo.getNo());
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return SystemFinal.LOAD_SUCCESS;
 	}
 	
 	@Override
@@ -159,4 +178,16 @@ public class SCC001Action extends AMN_ModuleAction implements ModelDriven<School
 	public SchoolInfo getModel() {
 		return schoolInfo;
 	}
+
+	public List<SchoolCreditDetail> getSchoolCreditDetailList() {
+		return schoolCreditDetailList;
+	}
+
+	public void setSchoolCreditDetailList(
+			List<SchoolCreditDetail> schoolCreditDetailList) {
+		this.schoolCreditDetailList = schoolCreditDetailList;
+	}
+
+	
+	
 }

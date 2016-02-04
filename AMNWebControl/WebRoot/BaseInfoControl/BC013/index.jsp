@@ -499,7 +499,10 @@
 							    	<td>保质期</td>
 							    	<td><s:textfield name="curGoodsinfo.proddate" id="proddate" theme="simple"  readonly="true" style="width:100;"/>月</td>
 							    </tr>
-							     
+							    <tr class="tr">
+							    	<td>每月订单量限制</td>
+							    	<td><s:textfield name="curGoodsinfo.monthmaxorder" id="monthmaxorder" theme="simple"  readonly="true" style="width:100;"/></td>
+							    </tr>
 						   	</table>
 						   	</form>
 						    </div>

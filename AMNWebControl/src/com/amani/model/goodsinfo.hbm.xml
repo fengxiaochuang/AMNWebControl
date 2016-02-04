@@ -150,5 +150,8 @@
         <property name="enablebarcode" type="java.lang.String">
             <column name="enablebarcode" length="1" />
         </property>
+        <property name="monthmaxorder" type="java.lang.Integer">
+            <column name="monthmaxorder"  />
+        </property>
     </class>
 </hibernate-mapping>

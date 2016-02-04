@@ -5,7 +5,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-  
     <link href="<%=ContextPath%>/common/ligerui/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <script src="<%=ContextPath%>/common/ligerui/jquery/jquery-1.5.2.min.js" type="text/javascript"></script>
    	<script src="<%=ContextPath%>/common/ligerui/jquery/jquery.tablescroll.js" type="text/javascript"></script>
@@ -20,11 +19,6 @@
 	<script type="text/javascript" src="<%=ContextPath%>/common/pinyin.js"></script>
 	<script type="text/javascript" src="<%=ContextPath%>/common/standprint.js"></script>
 	<script type="text/javascript" src="<%=ContextPath%>/SupplierControl/SUC002/suc002.js"></script>
-	<script language="vbscript">
-			function toAsc(str)
-			toAsc = hex(asc(str))
-			end function
-	</script>
 	<style type="text/css">
            body{ font-size:12px;}
         .l-table-edit {}

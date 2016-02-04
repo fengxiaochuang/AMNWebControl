@@ -868,6 +868,21 @@
         		 $.ligerDialog.warn("该用户没有保存权限,请确认!");
         		 return;
         	}
+        	var factcardNo="";
+			 if(T6Init()){
+			 	factcardNo = T6ReadCard();
+	    	 	T6Close();
+	    	 }else{
+		    		var CardControl=parent.document.getElementById("CardCtrlOld");
+		    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+		    		factcardNo=CardControl.ReadCard();
+		    	}
+			 if(factcardNo!=document.getElementById("rechargecardno").value)
+			 {
+			 	$.ligerDialog.error("读卡器卡号与系统显示卡号不一致,或卡不在读卡器内!");
+	 		 	postState=0;
+	 		 	return ;
+			 }
 			if(pageState==3)
 	   		{
 	   			$.ligerDialog.warn("非新增单据,不可保存!");
@@ -1916,9 +1931,15 @@
         }
 	     function readCurCardInfo()
         {
-        	var CardControl=parent.document.getElementById("CardCtrl");
-			CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-			var cardNo=CardControl.ReadCard();
+			var cardNo="";
+			if(T6Init()){
+				cardNo = T6ReadCard();
+	    		T6Close();
+	    	}else{
+	    		var CardControl=parent.document.getElementById("CardCtrlOld");
+	    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+	    		cardNo=CardControl.ReadCard();
+	    	}
 			if(cardNo!="")
 			{
 				document.getElementById("rechargecardno").value=cardNo;

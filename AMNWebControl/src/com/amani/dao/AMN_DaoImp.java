@@ -18,6 +18,7 @@ import javax.sql.rowset.CachedRowSet;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -323,6 +324,16 @@ public class AMN_DaoImp extends HibernateDaoSupport implements AMN_Dao
 	{
 		return null;
 	}
+	
+	
+	//执行标准的Sql
+	public  List<Object[]> findBySql2(String strSql){
+		 SQLQuery sqlquery = this.getSession().createSQLQuery(strSql);
+		
+		   List<Object[]> list= sqlquery.list() ;
+			return list;
+	}
+	
 	//注意这个函数是自己管理事务的，所以不可以包涵在另外一个事务中
 	public boolean executeSql(final String strSql)
 	{

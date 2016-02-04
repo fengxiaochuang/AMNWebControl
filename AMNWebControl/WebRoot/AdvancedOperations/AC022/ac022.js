@@ -5,62 +5,62 @@ $(function ()
 {
    try
    {
-	   $.extend($.ligerui.controls.ComboBox.prototype, {
-			_setUrl: function ()
-			{
-
-			},
-			_setAutocomplete: function (value)
-			{
-				var g = this, p = this.options;
-				if (!value) return;
-				g.inputText.removeAttr("readonly");
-				g.lastInputText = g.inputText.val();
-				g.inputText.keyup(function (event)
-				{
-					if (event.keyCode == 38 || event.keyCode == 40 || event.keyCode == 13) //up 、down、enter
-					{
-						return;
-					}
-					if (this._acto)
-						clearTimeout(this._acto);
-					this._acto = setTimeout(function ()
-					{
-						if (g.lastInputText == g.inputText.val()) return;
-						p.initValue = "";
-						g.valueField.val("");
-
-						var currentKey = g.inputText.val();
-						if (currentKey) currentKey = currentKey.replace(/(^\s*)|(\s*$)/g, "");
-						if ($.isFunction(value))
-						{
-							value.call(g, {
-								key: currentKey,
-								show: function ()
-								{
-									g._selectBoxShow();
-								}
-							});
-							return;
-						}
-						if (!p.autocompleteAllowEmpty && !currentKey)
-						{
-							g.clear();
-							g.selectBox.hide();
-							return;
-						}
-						if (p.url)
-						{
-							g.setParm('key', g.inputText.val());
-							if (p.url == 'loadAutoProject')
-								loadAutoProject(g, g.inputText.val());
-						}
-						g.lastInputText = g.inputText.val();
-						this._acto = null;
-					}, 300);
-				});
-			}
-		});
+//	   $.extend($.ligerui.controls.ComboBox.prototype, {
+//			_setUrl: function ()
+//			{
+//
+//			},
+//			_setAutocomplete: function (value)
+//			{
+//				var g = this, p = this.options;
+//				if (!value) return;
+//				g.inputText.removeAttr("readonly");
+//				g.lastInputText = g.inputText.val();
+//				g.inputText.keyup(function (event)
+//				{
+//					if (event.keyCode == 38 || event.keyCode == 40 || event.keyCode == 13) //up 、down、enter
+//					{
+//						return;
+//					}
+//					if (this._acto)
+//						clearTimeout(this._acto);
+//					this._acto = setTimeout(function ()
+//					{
+//						if (g.lastInputText == g.inputText.val()) return;
+//						p.initValue = "";
+//						g.valueField.val("");
+//
+//						var currentKey = g.inputText.val();
+//						if (currentKey) currentKey = currentKey.replace(/(^\s*)|(\s*$)/g, "");
+//						if ($.isFunction(value))
+//						{
+//							value.call(g, {
+//								key: currentKey,
+//								show: function ()
+//								{
+//									g._selectBoxShow();
+//								}
+//							});
+//							return;
+//						}
+//						if (!p.autocompleteAllowEmpty && !currentKey)
+//						{
+//							g.clear();
+//							g.selectBox.hide();
+//							return;
+//						}
+//						if (p.url)
+//						{
+//							g.setParm('key', g.inputText.val());
+//							if (p.url == 'loadAutoProject')
+//								loadAutoProject(g, g.inputText.val());
+//						}
+//						g.lastInputText = g.inputText.val();
+//						this._acto = null;
+//					}, 300);
+//				});
+//			}
+//		});
         commoninfodivdetial=$("#commoninfodivdetial").ligerGrid({
             columns: [
             { display: '项目编号', 	name: 'ineritemno',  	width:150,align: 'left',
@@ -159,6 +159,7 @@ $(function ()
     			}
        		}
        	}
+        
         compSelect();
         $("#handDyqOuterCardInfo").ligerButton({
      	   text: '登记微信券', width: 120,
@@ -196,16 +197,20 @@ function compSelect(){
 function loadInfoMessage(request){
 	try
     {
+		console.log(JSON.stringify(request));
 		var responsetext = eval("(" + request.responseText + ")");
+		alert("2");
 		var returnValue='';
         commoninfodivdetial.options.data=$.extend(true, {},{Rows: null,Total: 0});
         commoninfodivdetial.loadData(true);
         var i=0;
+        alert("3");
         while(i<8)
         {
         	addDetialRecord();
         	i++;
         }
+        alert("4");
         this.lsProjectinfo=responsetext.lsProjectinfo;
    	}
    	catch(e){alert(e.message);}

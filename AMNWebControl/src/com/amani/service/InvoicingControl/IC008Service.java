@@ -9,7 +9,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.amani.action.AnlyResultSet;
-
 import com.amani.model.Dgoodsorderinfo;
 import com.amani.model.DgoodsorderinfoId;
 import com.amani.model.Mgoodsorderinfo;
@@ -431,6 +430,33 @@ public class IC008Service extends AMN_ModuleService{
 			};
 			String supplierno = (String)this.amn_Dao.executeQuery_ex(strSql,analysis);
 			analysis=null;
+			return supplierno;
+	 }
+	 
+	 /**
+	  * 根据产品编号获取该产品这月已经下单量
+	  * @param goodsno
+	  * @return
+	  */
+	 public Integer getMaxNumOrder(String yearMonth,String goodNO){
+		 String strSql="select sum(dg.downordercount) downordercount from  mgoodsorderinfo mg,dgoodsorderinfo dg where mg.ordercompid=dg.ordercompid  and mg.orderbillid=dg.orderbillid and mg.downorderdate = '"+yearMonth+"' and dg.ordergoodsno='"+goodNO+"'";
+		 AnlyResultSet<String> analysis = new AnlyResultSet<String>()
+			{
+				public String anlyResultSet(ResultSet rs)
+				{
+					String returnValue ="";
+					try{
+						if(rs != null && rs.next()==true){
+							returnValue=rs.getString("downordercount");
+						}				
+					}catch(Exception e){
+						e.printStackTrace();
+						returnValue = "";
+					}
+					return returnValue;
+				}
+			};
+			Integer supplierno = (Integer) this.amn_Dao.executeQuery_ex(strSql,analysis);
 			return supplierno;
 	 }
 }

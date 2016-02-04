@@ -1183,13 +1183,20 @@ public class CC011Action extends AMN_ModuleAction{
 			this.lsDpayinfos.add(this.cc011Service.addDpayinfo());
 			//lsBillState=cc011Service.loadBillId(CommonTool.getLoginInfo("COMPID"));
 			strSalePayMode=this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP067");
-			paramSp097=Integer.parseInt(this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP097"));
-			paramSp098=Integer.parseInt(this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP098"));
-			paramSp104=Integer.parseInt(this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP104"));
-			paramSp108=Integer.parseInt(this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP108"));
-			paramSp112=Integer.parseInt(this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP112"));
-			paramSp113=Integer.parseInt(this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP113"));
-			paramSp016=Integer.parseInt(this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP016"));
+			String sp097 = this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP097");
+			paramSp097=Integer.parseInt(org.apache.commons.lang.StringUtils.isEmpty(sp097)?"0":sp097);
+			String sp098 = this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP098");
+			paramSp098=Integer.parseInt(org.apache.commons.lang.StringUtils.isEmpty(sp098)?"1":sp098);
+			String sp104 = this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP104");
+			paramSp104=Integer.parseInt(org.apache.commons.lang.StringUtils.isEmpty(sp104)?"0":sp104);
+			String sp108 = this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP108");
+			paramSp108=Integer.parseInt(org.apache.commons.lang.StringUtils.isEmpty(sp108)?"0":sp108);
+			String sp112 = this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP112");
+			paramSp112=Integer.parseInt(org.apache.commons.lang.StringUtils.isEmpty(sp112)?"0":sp112);
+			String sp113 = this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP113");
+			paramSp113=Integer.parseInt(org.apache.commons.lang.StringUtils.isEmpty(sp113)?"0":sp113);
+			String sp016 = this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP016");
+			paramSp016=Integer.parseInt(org.apache.commons.lang.StringUtils.isEmpty(sp016)?"0":sp016);
 			String strSp105=CommonTool.FormatString(this.cc011Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"), "SP105"));
 			if(strSp105.equals("1"))
 				paramSp105=1;

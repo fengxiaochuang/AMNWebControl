@@ -419,7 +419,7 @@
             $("#searchdate").ligerDateEditor({ labelWidth: 100, labelAlign: 'right',width:'120',onChangeDate: loadInfoByvalidate });
          	
       		var today = new Date();
-			var intYear=today.getYear();
+			var intYear=today.getFullYear().toString();
 			var intMonth=today.getMonth()+1;
 			var intDay=today.getDate();
 			var today = intYear.toString()+"-"+fullStr(intMonth.toString())+"-"+fullStr(intDay.toString());

@@ -109,6 +109,9 @@
 	<mapping resource="com/amani/model/Yearselldetal.hbm.xml" />
 	<mapping resource="com/amani/model/Yearsellinfo.hbm.xml" />
 	<mapping resource="com/amani/model/staffHairdesignerinfo.hbm.xml" />
+	
+	<mapping resource="com/amani/model/Studentinfo.hbm.xml" />
+	<mapping resource="com/amani/model/Studentfamilyinfo.hbm.xml" />
 <!-- 	<mapping resource="com/amani/model/staffDesignerinfo.hbm.xml" /> -->
 	<mapping class="com.amani.model.SchoolInfo"/>
 	<mapping class="com.amani.model.SchoolCredit"/>

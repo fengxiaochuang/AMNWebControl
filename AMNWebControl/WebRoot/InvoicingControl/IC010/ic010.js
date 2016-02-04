@@ -516,8 +516,9 @@
 								var responsetext = eval( "("+request.responseText+")");	
 								
 	   							loadCurMaster(responsetext.curMgoodssendinfo);
+	   					
 	   							//关闭屏蔽窗口
-	   							showDialog.close();
+	   							setTimeout(function(){showDialog.close();},5000);  //5秒后关闭提示框
 	   							//removecloud();
 							},
 							asynchronous:true

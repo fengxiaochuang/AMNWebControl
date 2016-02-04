@@ -59,10 +59,15 @@ function itemsearchbeginInid(obj1, itemindex) {
 
 function validateCscardno(cardNo) {
 	if(checkNull(cardNo)==""){
-		var CardControl = parent.document.getElementById("CardCtrl");
-		CardControl.Init(parent.commtype, parent.prot, parent.password1,
-				parent.password2, parent.password3);
-		cardNo = CardControl.ReadCard();
+		var cardNo="";
+		if(T6Init()){
+			cardNo = T6ReadCard();
+    		T6Close();
+    	}else{
+    		var CardControl=parent.document.getElementById("CardCtrlOld");
+    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+    		cardNo=CardControl.ReadCard();
+    	}
 	}
 	var requestUrl = contextURL + "/cc011/validateCscardno.action";
 	var responseMethod = "validateCscardnoMessage";

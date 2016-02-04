@@ -30,12 +30,6 @@
 	    .l-layout-bottom{ background:#E5EDEF; text-align:center;}
 		 #dv_scroll{position:absolute;height:98%;overflow:hidden;width:298px;}
     </style>
-    
-    <script language="vbscript">
-			function toAsc(str)
-			toAsc = hex(asc(str))
-			end function
-	</script>
 </head>
 <body >
 <div class="l-loading" style="display:block" id="pageloading"></div> 
@@ -57,6 +51,8 @@
 								&nbsp;&nbsp;<font color="red">消耗产品</font>
 											&nbsp;&nbsp;
 											<input type="text"name="winsergoodsno" id="winsergoodsno"    style="width:120;" onchange="validateinserno(this);"  onfocus="itemsearchbegin(this,2)"/>
+											<div id="keysList" style="background: rgb(255, 255, 255); border: 2px solid rgb(164, 166, 161); border-image: none; left: 83px; top: 440px; width: 350px; font-size: 13px; display: none; position: absolute; z-index: 2; cursor: default;" onblur=""></div>
+											<style>.sman_selectedStyle{background-Color:#102681;color:#FFFFFF}</style>
 											&nbsp;&nbsp;名称
 											<input type="text"name="winsergoodsname" id="winsergoodsname"   readonly="true" style="width:160;" />
 											&nbsp;&nbsp;单位
@@ -90,6 +86,4 @@
 </html>
 	<script language="JavaScript">
   	 	var contextURL="<%=request.getContextPath()%>";
-  		document.write("<div id=\"keysList\" style=\"z-index:2;width:250px;position:absolute;display:none;background:#FFFFFF;border: 2px solid #a4a6a1;font-size:13px;cursor: default;\" onblur> </div>");
-        document.write("<style>.sman_selectedStyle{background-Color:#102681;color:#FFFFFF}</style>");
 	</script>

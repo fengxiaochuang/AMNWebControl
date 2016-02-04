@@ -177,6 +177,8 @@
 			if(document.getElementById("printtype1").checked==true)
 			{
 				strValue="1";
+			}else if(document.getElementById("printtype3").checked==true){
+				strValue="3";
 			}
 			Stand_CheckPrintControl();
 			if(strValue=="2")

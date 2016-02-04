@@ -16,12 +16,6 @@
 	<script type="text/javascript" src="<%=ContextPath%>/CardControl/CC016/cc016.js"></script>
 	<script type="text/javascript" src="<%=ContextPath%>/common/pinyin.js"></script>
 	<script type="text/javascript" src="<%=ContextPath%>/common/mindsearchitem.js"></script>
-	<script language="vbscript">
-			function toAsc(str)
-			toAsc = hex(asc(str))
-			end function
-	</script>
-
 		<style type="text/css">
            body{ font-size:12px;}
         .l-table-edit {}

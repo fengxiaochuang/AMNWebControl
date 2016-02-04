@@ -14,11 +14,6 @@
 	<script type="text/javascript" src="<%=ContextPath%>/common/mindsearchitem.js"></script>
 	<script type="text/javascript" src="<%=ContextPath%>/common/pinyin.js"></script>
 	<script type="text/javascript" src="<%=ContextPath%>/CardControl/CC017/cc017.js"></script>
-	<script language="vbscript">
-			function toAsc(str)
-			toAsc = hex(asc(str))
-			end function
-	</script>
 		<style type="text/css">
            body{ font-size:12px;}
         .l-table-edit {}
@@ -192,6 +187,8 @@
 								<tr>
 											<td colspan="10">
 											<div id="toptoolbardetial"></div>
+											<div id="keysList" style="background: rgb(255, 255, 255); border: 2px solid rgb(164, 166, 161); border-image: none; top: 440px; width: 350px; font-size: 13px; display: none; position: absolute; z-index: 2; cursor: default;" onblur=""></div>
+											<style>.sman_selectedStyle{background-Color:#102681;color:#FFFFFF}</style>
 											<div id="commoninfodivchangepro"></div>
 											</td>
 								</tr>
@@ -235,6 +232,4 @@
 </html>
 	<script language="JavaScript">
   	 	var contextURL="<%=request.getContextPath()%>";
-  		document.write("<div id=\"keysList\" style=\"z-index:2;width:350px;position:absolute;display:none;background:#FFFFFF;border: 2px solid #a4a6a1;font-size:13px;cursor: default;\" onblur> </div>");
-        document.write("<style>.sman_selectedStyle{background-Color:#102681;color:#FFFFFF}</style>");
 	</script>

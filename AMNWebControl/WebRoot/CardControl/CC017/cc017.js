@@ -634,9 +634,15 @@
 		
 		function readCurCardInfo()
         {
-        	var CardControl=parent.document.getElementById("CardCtrl");
-			CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-			var cardNo=CardControl.ReadCard();
+			var cardNo="";
+			if(T6Init()){
+				cardNo = T6ReadCard();
+	    		T6Close();
+	    	}else{
+	    		var CardControl=parent.document.getElementById("CardCtrlOld");
+	    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+	    		cardNo=CardControl.ReadCard();
+	    	}
 			if(cardNo!="")
 			{
 				document.getElementById("returncardno").value=cardNo;
@@ -797,9 +803,15 @@
 		 {
 			if( result==true)
 			{     
-				var CardControl=parent.document.getElementById("CardCtrl");
-				CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-				var inserCardno=CardControl.ReadCard();
+				var inserCardno="";
+				if(T6Init()){
+					inserCardno = T6ReadCard();
+		    		T6Close();
+		    	}else{
+		    		var CardControl=parent.document.getElementById("CardCtrlOld");
+		    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+		    		inserCardno=CardControl.ReadCard();
+		    	}
 				if(checkNull(inserCardno)!="" )
 				{
 					if( checkNull(inserCardno)==document.getElementById("returncardno").value)
@@ -808,7 +820,16 @@
 						return;
 					}
 				}
-				var initflag=CardControl.WriteCard(document.getElementById("changecardno").value);
+				var initflag = 0;
+				var changecardno = document.getElementById("changecardno").value;
+				if(T6Init()){
+					initflag = T6WriteCard(changecardno)?1:0;
+	    			T6Close();
+	    		}else{
+	    			var CardControl=parent.document.getElementById("CardCtrlOld");
+	    			CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+	    			initflag = CardControl.WriteCard(changecardno);
+	    		}
 				if(initflag==0)
 				{
 					$.ligerDialog.error('会员卡初始化失败,请确认读卡器状态!');

@@ -61,6 +61,8 @@ public class Goodsinfo  implements java.io.Serializable {
     private String goodscompany;//允许采购门店
     private String enablebarcode;//是否启用条码校验
     
+    private Integer monthmaxorder; //当月采购最大量
+    
 	public String getEnablebarcode() {
 		return enablebarcode;
 	}
@@ -344,5 +346,11 @@ public class Goodsinfo  implements java.io.Serializable {
 	public void setMinordercount(BigDecimal minordercount) {
 		this.minordercount = minordercount;
 	}
-
+	public Integer getMonthmaxorder() {
+		return monthmaxorder;
+	}
+	public void setMonthmaxorder(Integer monthmaxorder) {
+		this.monthmaxorder = monthmaxorder;
+	}
+    
 }

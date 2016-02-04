@@ -866,9 +866,15 @@
     			$.ligerDialog.error("请确认输入条码卡号");
     			return;
     		}
-        	var CardControl=parent.document.getElementById("CardCtrl");
-			CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-			var cardNo=CardControl.ReadCard();
+			var cardNo="";
+			if(T6Init()){
+				cardNo = T6ReadCard();
+	    		T6Close();
+	    	}else{
+	    		var CardControl=parent.document.getElementById("CardCtrlOld");
+	    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+	    		cardNo=CardControl.ReadCard();
+	    	}
 			if(cardNo!="")
 			{
 				document.getElementById("usecardno").value=cardNo;

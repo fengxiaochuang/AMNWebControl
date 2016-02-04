@@ -940,11 +940,18 @@
 	        	var responsetext = eval("(" + request.responseText + ")");
 	        	var strMessage=responsetext.strMessage;
 	        	if(checkNull(strMessage)=="")
-	        	{	        		 
-	        		var CardControl=parent.document.getElementById("CardCtrl");
-					CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-					var initflag=CardControl.WriteCard(document.getElementById("mangerPassword").value);
-					if(initflag==0)
+	        	{	      
+	        		var initflag = 0;
+	        		var passwd = document.getElementById("mangerPassword").value;
+	        		if(T6Init()){
+	        			initflag = T6WriteCard(passwd)?1:0;
+	            		T6Close();
+	            	}else{
+	            		var CardControl=parent.document.getElementById("CardCtrlOld");
+	            		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+	            		initflag=CardControl.WriteCard(passwd);
+	            	}
+					if(initflag==0 )
 					{
 						$.ligerDialog.error('经理卡初始化失败,请重新初始化!');
 					}

@@ -791,5 +791,43 @@ public class IC010Service extends AMN_ModuleService{
 			analysis=null;
 		 	return ls;			
 	 }
+	 
+	 /**
+	  * 查询数据   sendseqno
+	  * @param strGoodsNo
+	  * @param strGoodsBarNo
+	  * @return
+	  */
+	 public List<Dgoodssendinfo> findSendseqno(String sendcompid,String sendbillid)
+	 {
+			 String strSql="select * from dgoodssendinfo 	 where sendcompid='"+sendcompid+"' and sendbillid='"+sendbillid+"' ";
+			 AnlyResultSet<List<Dgoodssendinfo>> analysis = new AnlyResultSet<List<Dgoodssendinfo>>()
+						{
+							public List<Dgoodssendinfo> anlyResultSet(ResultSet rs)
+							{
+								List<Dgoodssendinfo> returnValue =new ArrayList();
+								Dgoodssendinfo record=null;
+								try
+								{
+									while(rs != null && rs.next()==true)
+									{
+										record=new Dgoodssendinfo();
+										record.setId(new DgoodssendinfoId("","",rs.getDouble("sendseqno")));
+										returnValue.add(record);
+									}				
+								}
+								catch(Exception e)
+								{
+									e.printStackTrace();
+									returnValue = null;
+								}
+								return returnValue;
+							}
+						};
+						List<Dgoodssendinfo>  ls= (List<Dgoodssendinfo>)this.amn_Dao.executeQuery_ex(strSql,analysis);
+						analysis=null;
+					 	return ls;		
+	 }
+	 
 }
 

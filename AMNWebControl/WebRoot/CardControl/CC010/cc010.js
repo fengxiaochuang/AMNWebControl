@@ -709,9 +709,15 @@
 		{
 				if( result==true)
 				{
-					var CardControl=parent.document.getElementById("CardCtrl");
-					CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-					var cardNo=CardControl.ReadCard();
+					var cardNo="";
+					if(T6Init()){
+						cardNo = T6ReadCard();
+			    		T6Close();
+			    	}else{
+			    		var CardControl=parent.document.getElementById("CardCtrlOld");
+			    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+			    		cardNo=CardControl.ReadCard();
+			    	}
 					if(cardNo=="")
 					{
 						$.ligerDialog.error("请初始化卡号");
@@ -813,7 +819,6 @@
 		   			$.ligerDialog.error("读卡器中的卡和补卡卡号对应不上。请检查一下。或者不是新卡");
 					return;
 				}
-		   		//CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
 				var initflag=CardControl.WriteCard(document.getElementById("changeaftercardno").value);
 				if(initflag==0)
 				{
@@ -844,8 +849,6 @@
 	        	var strMessage=responsetext.strMessage;
 	        	if(checkNull(strMessage)=="")
 	        	{	        		 
-	        		//var CardControl=parent.document.getElementById("CardCtrl");
-					//CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
 					$.ligerDialog.success("IC卡初始化成功,登记成功");
 					location.reload();
 	        		handleRadio("billflag",3);

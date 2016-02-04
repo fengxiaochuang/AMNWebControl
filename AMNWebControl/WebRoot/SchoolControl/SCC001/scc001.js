@@ -33,12 +33,11 @@ $(function(){
        	$("#masterGrid .l-grid-body-inner").css('width', 340);
        	detialGrid=$("#detialGrid").ligerGrid({
             columns: [
-            { display: '已合作课程', 	name: 'insergoodsno', width:110, align: 'left' },
-            { display: '培训人数', 	name: 'insergoodsname', width:150, align: 'left' },
-            { display: '合格人次', name: 'inserunit', width:150, align: 'left'},
-            { display: '合格率',  name: 'insercount', width:150, align: 'left'}
+            { display: '已合作课程', 	name: 'subjectName', width:225, align: 'center' },
+            { display: '培训人数', 	name: 'trainingNumber', width:225, align: 'center' },
+            { display: '合格人次', name: 'qualifiedNumber', width:225, align: 'center'},
+            { display: '合格率',  name: 'rate', width:225, align: 'center'}
             ],  pageSize:20, 
-            data:{Rows: null,Total:0},      
             width: '900',
             height:'500',
             clickToEdit: true,   enabledEdit: true,  checkbox:false,
@@ -180,4 +179,26 @@ function loadDetialData(data, rowindex, rowobj){
 		$("#describe").val(checkNull(data.describe));
 		$("#remark").val(checkNull(data.remark));
 	}
+	
+	var requestUrl ="scc001/findDetail.action";
+	var params = {no:data.no};	
+	var responseMethod="loadDataSet2";		
+	sendRequestForParams_p(requestUrl,responseMethod, params);
+	
+	
 }
+
+function loadDataSet2(request){
+	var responsetext = eval("(" + request.responseText + ")");
+	var list = responsetext.schoolCreditDetailList;
+	detialGrid.options.data=$.extend(true, {}, {Rows: list,Total: list.length});
+	detialGrid.loadData(true);   
+}
+
+
+
+
+
+
+
+

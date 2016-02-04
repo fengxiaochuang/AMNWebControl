@@ -187,6 +187,7 @@
 											<input type="hidden" id="wminordercount" name="wminordercount" /> 
 											<input type="hidden" id="wmaxordercount" name="wmaxordercount" /> 
 											<input type="hidden" id="goodspricetype" name="goodspricetype" /> 
+											<input type="hidden" id="monthmaxorder" name="monthmaxorder" /> 
 											</td>
 							
 										</tr>

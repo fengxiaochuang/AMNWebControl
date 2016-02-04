@@ -34,6 +34,12 @@ public class SchoolCredit implements java.io.Serializable {
 	//状态
 	private Integer state=1;
 	
+	
+	private Integer score;//学分
+	
+	private String year; //  年份
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -70,4 +76,17 @@ public class SchoolCredit implements java.io.Serializable {
 	public void setState(Integer state) {
 		this.state = state;
 	}
+	public Integer getScore() {
+		return score;
+	}
+	public void setScore(Integer score) {
+		this.score = score;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	
 }

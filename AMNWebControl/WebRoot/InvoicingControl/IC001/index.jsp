@@ -20,16 +20,6 @@
 	<script type="text/javascript" src="<%=ContextPath%>/common/pinyin.js"></script>
 	<script type="text/javascript" src="<%=ContextPath%>/common/standprint.js"></script>
 	<script type="text/javascript" src="<%=ContextPath%>/InvoicingControl/IC001/ic001.js"></script>
-
-	
-	<script language="vbscript">
-			function toAsc(str)
-			toAsc = hex(asc(str))
-			end function
-	</script>
-	
-	
-	
 	<style type="text/css">
            body{ font-size:12px;}
         .l-table-edit {}
@@ -151,9 +141,7 @@
 											<input type="hidden" id="wstandprice" name="wstandprice" /> 
 											<font color="red">[回车新增自动生成条码]</font>
 											</td>
-										
 										</tr>
-										
 										
 									</table>
 									<input type="hidden" id="inserwareid_h" name="curMgoodsinsert.inserwareid" />

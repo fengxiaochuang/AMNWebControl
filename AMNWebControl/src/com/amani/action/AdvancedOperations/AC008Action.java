@@ -341,7 +341,8 @@ public class AC008Action extends AMN_ModuleAction{
 	}) 
 	public String load()
 	{
-		paramSp112=Integer.parseInt(this.ac008Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP112"));
+		String sp112 = this.ac008Service.getDataTool().loadSysParam(CommonTool.getLoginInfo("COMPID"),"SP112");
+		paramSp112=Integer.parseInt(org.apache.commons.lang.StringUtils.isEmpty(sp112)?"0":sp112);
 		return SystemFinal.LOAD_SUCCESS;
 	}
 	

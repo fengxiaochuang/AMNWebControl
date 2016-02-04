@@ -38,7 +38,6 @@ function dearray(obj,itemindex)//定义array
  	    }
  	    else if(itemindex==6)
  	    {
- 	 
  	    	if(checkNull(obj[i].prjsaletype)==1  && checkNull(obj[i].saleflag)==1)
  	    	{
  	    		arrList[ccount]=obj[i].id.prjno+"-"+obj[i].prjname+"["+obj[i].saleprice+"]";
@@ -156,7 +155,6 @@ function downList(arrList,objInputId,itemindex,wareNo)
  var objInput = document.getElementById(objInputId); //文本框对象
  var selectedIndex=-1;
  var intTmp; //循环用的
- 
  if (objInput==null)
  {
   alert("downList初始化失败:没有找到"+objInputId+"文本框");
@@ -220,7 +218,7 @@ function downList(arrList,objInputId,itemindex,wareNo)
 		     	}
 			}
 		}
-		objouter.style.display="";
+		objouter.style.display="block";
    		return;
    }
    for (var intTmp=0;intTmp<arrList.length;intTmp++)
@@ -267,38 +265,33 @@ function downList(arrList,objInputId,itemindex,wareNo)
 	    }
    
    }
-   objouter.style.display="";
+   objouter.style.display="block";
   }
   else
   {
    objouter.style.display="none";
   }
  
-   
  	//想下拉列表里添加匹配项
  	function addOptiondiv(value,keyw)
   	{
    		var showvalue = value.replace(keyw, "<b><font color=\"blue\">" + keyw + "</font></b>");
   		var realValue=value.substring(0,value.indexOf("-"));
   		objouter.innerHTML +="<div onmouseover=this.className=\"sman_selectedStyle\";document.getElementById(\""+objInputId+"\").value=\"" + realValue + "\" onmouseout=this.className=\"\"; onmousedown=document.getElementById(\""+objInputId+"\").value=\"" + realValue + "\";selectCall();document.getElementById(\""+objInputId+"\").onchange();>" + showvalue + "</div>" ;
+  		
   	}
- }//end checkAndShow()
-  
-  
-
+ }
   
  function selectCall()
  {
  	
  }
  
- 
-  
  function chageSelection(isUp)
  {
   if (objouter.style.display=="none")
   {
-   objouter.style.display="";
+   objouter.style.display="block";
   }
   else
   {
@@ -307,7 +300,6 @@ function downList(arrList,objInputId,itemindex,wareNo)
    else
     selectedIndex--;
   }
-  
   var maxIndex = objouter.childNodes.length-1;
   if (selectedIndex<0){selectedIndex=0;}
   if (selectedIndex>maxIndex) {selectedIndex=maxIndex;}
@@ -338,7 +330,6 @@ function downList(arrList,objInputId,itemindex,wareNo)
  //显示下拉列表项
  function divPosition(evt)
  {
- 	
   var e = objInput;
   var ie = (document.all)? true:false
   //定义列表区在不同浏览器中的位置

@@ -125,7 +125,7 @@
             });
             
             var today = new Date();
-			var intYear=today.getYear();
+			var intYear=today.getFullYear().toString();
 			var intMonth=today.getMonth()+1;
 			if(intMonth<10)
 			intMonth='0'+intMonth;

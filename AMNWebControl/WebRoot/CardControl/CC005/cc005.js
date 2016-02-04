@@ -750,21 +750,41 @@
 	        }
         	$.ligerDialog.confirm('确认初始化 '+document.getElementById("cardno").value+' IC卡 ?', function (result)
 			{
-			    if( result==true)
+			    if(result==true)
 	           	{
-	           		var CardControl=parent.document.getElementById("CardCtrl");
-					CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-					CardControl.WriteCard(document.getElementById("cardno").value);
-					$.ligerDialog.success("请在本界面读卡测试!");
+			    	var initflag = 0;
+			    	var cardNo = document.getElementById("cardno").value;
+			    	if(T6Init()){
+	        			initflag = T6WriteCard(cardNo)?1:0;
+	            		T6Close();
+	            	}else{
+	            		var CardControl=parent.document.getElementById("CardCtrlOld");
+	            		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+	            		initflag = CardControl.WriteCard(cardNo);
+	            	}
+			    	if(initflag==0 )
+					{
+						$.ligerDialog.error('初始化失败,请重新初始化!');
+					}
+					else
+					{
+						$.ligerDialog.success('初始化成功!');
+					}
 	           	}
 	        });
         }
         
         function readCurCardInfo()
         {
-        	var CardControl=parent.document.getElementById("CardCtrl");
-			CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-			var cardNo=CardControl.ReadCard();
+			var cardNo="";
+			if(T6Init()){
+				cardNo = T6ReadCard();
+	    		T6Close();
+	    	}else{
+	    		var CardControl=parent.document.getElementById("CardCtrlOld");
+	    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+	    		cardNo=CardControl.ReadCard();
+	    	}
 			if(cardNo!="")
 			{
 				document.getElementById("searchMemberNoKey").value=cardNo;

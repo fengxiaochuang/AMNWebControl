@@ -70,7 +70,7 @@ public class SCC002Action extends AMN_ModuleAction implements ModelDriven<School
 	@Action(value="query", results={@Result(name="load_success", type="json")})
 	public String query(){
 		try{
-			List<SchoolCredit> list= scc002Service.queryDataSet(schoolCredit.getName());
+			List<SchoolCredit> list= scc002Service.queryDataSet(schoolCredit.getName(),schoolCredit.getSchool_no(),schoolCredit.getType());
 			listSet = list == null ? new ArrayList<SchoolCredit>() : list;
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -213,4 +213,9 @@ public class SCC002Action extends AMN_ModuleAction implements ModelDriven<School
 	public SchoolCredit getModel() {
 		return schoolCredit;
 	}
+
+	
+
+
+	
 }

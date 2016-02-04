@@ -21,12 +21,6 @@
 	<script type="text/javascript" src="<%=ContextPath%>/common/pinyin.js"></script>
 	<script type="text/javascript" src="<%=ContextPath%>/common/standprint.js"></script>
 	<script type="text/javascript" src="<%=ContextPath%>/BaseInfoControl/BC020/bc020.js"></script>
-	<script language="vbscript">
-			function toAsc(str)
-			toAsc = hex(asc(str))
-			end function
-	</script>
-	
 	<style type="text/css">
            body{ font-size:12px;}
         .l-table-edit {}

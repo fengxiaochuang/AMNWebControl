@@ -3,6 +3,7 @@ package com.amani.service.InvoicingControl;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -152,10 +153,10 @@ public class IC021Service  extends  AMN_ReportService{
 		.append("and (b.receiptstate in(1,0) or a.sendstate=1) and a.orderdate between '"+beginDate+"' and '"+endDate+"') ")
 		.append("select a.*,d.sendgoodsno,e.goodsname,d.downordercount,e.purchaseprice,e.costamtbysale from orders a ")
 		.append("left join dgoodssendinfo d on a.sendbillid=d.sendbillid, goodsinfo e where e.goodsno=d.sendgoodsno ")
-		.append("order by orderstate desc, orderdate desc");
+		.append("order by ordercompid ,orderstate desc, orderdate desc");
 		AnlyResultSet<Map<String, Map<String, List<CommonBean>>>> analysis = new AnlyResultSet<Map<String, Map<String, List<CommonBean>>>>() {
 			public Map<String, Map<String, List<CommonBean>>> anlyResultSet(ResultSet rs) {
-				Map<String, Map<String, List<CommonBean>>> hashMap = new HashMap<String, Map<String,List<CommonBean>>>();
+				Map<String, Map<String, List<CommonBean>>> hashMap = new LinkedHashMap<String, Map<String,List<CommonBean>>>();
 				CommonBean record=null;
 				try {
 					while (rs != null && rs.next()) {

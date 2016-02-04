@@ -47,6 +47,10 @@
 		.tablescroll tbody tr.first td{border-top:0;}
 		.tablescroll_foot{font-weight:bold;background-color:#eee;border-left:0;border-top:0;margin-top:3px;}
 		.tablescroll tfoot td{border-right:0;border-bottom:0;}
+		
+		.columnsCss{
+		    color:red
+		}
     </style>
 
 </head>
@@ -57,26 +61,38 @@
 	    	<form name="dataForm" method="post"  id="dataForm">
 				<table width="100%" border="0" cellspacing="1" cellpadding="0" style="font-size:12px;line-height:35px;">
 					<tr>
-						<td width="800" valign="top">
-							<table id="showTable" width="800" border="0" cellspacing="0" cellpadding="0" style="font-size:12px;line-height:25px;">
+						<td width="980" valign="top">
+							<table id="showTable" width="980" border="0" cellspacing="0" cellpadding="0" style="font-size:12px;line-height:25px;">
 								<tr style="text-align: center;"> 
-									<td><input id="strSearch" type="text" style="width:160"/></td>
-									<td><div id="searchButton"></div></td>
-									<td><div id="addBtn" style="float: right;"></div></td>
+									<td >
+									      <label>类别:</label>
+										       <select style="width:80" name="type" id="type">
+										             <option value="">*</option>
+										             <!-- <option value="0">美容</option>
+										             <option value="1">美发</option> -->
+										        </select>
+										<label style="margin-left:5px;">课程名称:</label><input id="subjectName" name="subjectName" type="text" style="width:160;"/>
+										<label style="margin-left:5px;">学校名称: </label><!--<input id="schoolName" name="schoolName" type="text" style="width:160;"/> -->
+									    <select id="schoolName" name="schoolName">
+									          <option value="">*</option>
+									    </select>
+									</td>
+									<td> <div id="searchButton"></div> </td>
+									<td> <div id="addBtn" style="float: left;"></div> </td>
 								</tr>
 							</table>
 							<div id="masterGrid" style="margin:0; padding:0;"></div>
 						</td>
 						<td valign="top">
-							<table width="440" border="0" cellspacing="1" cellpadding="0" style="font-size:12px;line-height:35px;">
+							<table width="620" border="0" cellspacing="1" cellpadding="0" style="font-size:12px;line-height:35px;">
 								<tr>
 									<td valign="top">
-										<div  style="width:440;float:left; clear:both;overflow:auto;font-size:12px;">
+										<div  style="width:620;float:left; clear:both;overflow:auto;font-size:12px;">
 											<table width="100%" border="0" cellspacing="1" cellpadding="0" style="font-size:12px;line-height:28px;" >
 												<tr>	
 													<td>
-														<div id="saveBtn" style="float: right;margin-right: 50px;"></div>
-														<div id="editBtn" style="float: right;margin-right: 95px;"></div>
+														<div id="saveBtn" style="float: left;margin-right: 50px;"></div>
+														<div id="editBtn" style="float: left;margin-right: 95px;"></div>
 													</td>
 												</tr>
 											</table>
@@ -84,7 +100,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td valign="top"><div id="detialGrid" style="margin:0; padding:0"></div></td>
+									<td valign="top"><!-- <div id="detialGrid" style="margin:0; padding:0"></div> --></td>
 								</tr>
 							</table>
 						</td>

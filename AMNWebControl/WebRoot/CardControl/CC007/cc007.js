@@ -1,4 +1,3 @@
-
    	var compTreeManager;
    	var compTree;
    	var commoninfodivdetial_pay=null;//支付方式
@@ -1085,16 +1084,31 @@
 							
 							var responseMethod="editMessage";
 							//IC卡初始化成功,
-							var CardControl=parent.document.getElementById("CardCtrl");
-							CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-							var cardNo=CardControl.ReadCard();
+							var cardNo="";
+							if(T6Init()){
+								cardNo = T6ReadCard();
+					    		T6Close();
+					    	}else{
+					    		var CardControl=parent.document.getElementById("CardCtrlOld");
+					    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+					    		cardNo=CardControl.ReadCard();
+					    	}
 							if(cardNo.length!=20 && cardNo!="" && cardNo!=document.getElementById("salecardno").value)
 							{
 								$.ligerDialog.error('会员卡初始化失败,请确认读卡器中的卡为未初始化的新卡!');
 								postState=0;
 							 	return;
 					    	}
-							var initflag=CardControl.WriteCard(document.getElementById("salecardno").value);
+							var initflag = 0;
+							var cardNo = document.getElementById("salecardno").value;
+							if(T6Init()){
+			        			initflag = T6WriteCard(cardNo)?1:0;
+			            		T6Close();
+			            	}else{
+			            		var CardControl=parent.document.getElementById("CardCtrlOld");
+			            		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+			            		initflag = CardControl.WriteCard(cardNo);
+			            	}
 						    if(initflag==0)
 						    {
 						    	$.ligerDialog.error('会员卡初始化失败,请确认读卡器状态!');

@@ -139,17 +139,6 @@
 	     		$.ligerDialog.error("请确请假结束时间!");
 	     		return ;
 	     	}
-	     	/*try
-	     	{
-		     	var CardControl=parent.parent.document.getElementById("CardCtrl");
-				CardControl.Init(parent.parent.commtype,parent.parent.prot,parent.parent.password1,parent.parent.password2,parent.parent.password3);
-				var cardNo=CardControl.ReadCard();
-				if(cardNo=="")
-				{
-					$.ligerDialog.error("请初始化卡号");
-					return;
-		    	}
-		    	}catch(e){alert(e.message);}*/
 		     	var params = "leavestaffno="+document.getElementById("leavestaffno").value;			
 	    		params =params+ "&leavedate="+document.getElementById("leavedate").value;	
 	    		params =params+ "&leavetype="+document.getElementById("leavetype").value;

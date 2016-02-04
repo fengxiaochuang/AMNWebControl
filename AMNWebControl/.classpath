@@ -160,5 +160,7 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/version.properties"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/xom-1.2.5.jar"/>
+	<classpathentry kind="lib" path="D:/work/x64/apache-tomcat-6.0.44/lib/memcached-session-manager-1.6.4.jar"/>
+	<classpathentry kind="lib" path="D:/work/x64/apache-tomcat-6.0.44/lib/memcached-session-manager-tc6-1.6.5.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

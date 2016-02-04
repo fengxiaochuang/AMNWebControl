@@ -698,7 +698,7 @@ function getCurrDate()
 	var intYear,intMonth,intDay;
 	var today;
 	today=new Date();
-	intYear=today.getYear();
+	intYear=today.getFullYear().toString();
 	intMonth=today.getMonth()+1;
 	intDay=today.getDate();
 	year = intYear; month = intMonth; day = intDay;

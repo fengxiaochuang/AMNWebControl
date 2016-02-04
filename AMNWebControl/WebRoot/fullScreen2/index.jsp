@@ -20,12 +20,14 @@
 	
 	<script type="text/javascript" src="<%=ContextPath%>/common/pinyin.js"></script>
 	<script type="text/javascript" src="<%=ContextPath%>/common/commoninfo.js"></script>
-	<object id="PrintControl" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
-		
-	</object>
-										
-	<object id="CardCtrl" classid="clsid:7B6EF111-7EF2-4B8B-B9F6-79D75A484C2F"
-  		   codebase="<%=AMN_OCX_PATH%>ICCard.CAB"style="visibility:hidden;height:0px" VIEWASTEXT ></object>
+	<div style="height:0px;">									
+		<%-- <object id="CardCtrl" classid="clsid:7B6EF111-7EF2-4B8B-B9F6-79D75A484C2F"
+	  		   codebase="<%=AMN_OCX_PATH%>ICCard.CAB"style="visibility:hidden;height:0px" VIEWASTEXT ></object> --%>
+		<object id="PrintControl" style="visibility:hidden;display:inline;width:0px; height:0px;" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" >
+		</object>
+		<object id="CardCtrl" classid="clsid:30646FBE-5764-4974-8948-AA49CE60FD90" codebase="<%=AMN_OCX_PATH%>ICCardT6.CAB" style="visibility:hidden;display:inline;height:0px" VIEWASTEXT ></object>
+	   	<object id="CardCtrlOld" classid="clsid:7B6EF111-7EF2-4B8B-B9F6-79D75A484C2F" codebase="<%=AMN_OCX_PATH%>ICCard.CAB" style="visibility:hidden;display:inline;height:0px" VIEWASTEXT ></object>
+    </div>
 <style type="text/css"> 
     body {
 	margin-left: 0px;

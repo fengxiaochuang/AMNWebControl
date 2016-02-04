@@ -11,8 +11,7 @@ import com.amani.tools.CommonTool;
  * @Copyright: AMN
  */
 public class Projectinfo  implements java.io.Serializable {
-
-
+	private static final long serialVersionUID = 3864210491329295542L;
 	private ProjectinfoId id;
 	private String prjname;
 	private String prjtype;

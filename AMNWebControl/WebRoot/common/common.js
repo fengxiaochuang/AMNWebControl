@@ -28,10 +28,111 @@ function fullStr( str )
 		}
 		return str;
 }
+/** t6卡API start**/
+var st; //主要用于返回值
+//初始化
+var rd=parent.document.getElementById("CardCtrl");
+function T6Init(){
+	st = rd.ControlAll("InitComm,NULL,100,NULL,NULL");
+	if (st!=0)
+	{
+	    //alert("请检查驱动！");
+	    rd.ControlAll("ExitComm,NULL,NULL,NULL,NULL");
+		return false;
+	}
+	//判断卡是否存在
+	st = rd.ControlAll("Status,NULL,NULL,NULL,NULL");
+	if (st==1)
+	{
+	    //alert("请插入会员卡！");
+	    rd.ControlAll("ExitComm,NULL,NULL,NULL,NULL");
+		return false;
+	}
+	if(st!= 0) 
+	{
+	    //alert("读卡失败！");
+	    rd.ControlAll("ExitComm,NULL,NULL,NULL,NULL");
+		return false;
+	}
+	return true;
+}
+
+//读卡
+function T6ReadCard(){
+	st = rd.ControlAll("Read,NULL,64,16,NULL");
+	if (st != 0) 
+	{
+	    alert("读卡失败！");
+	    rd.ControlAll("ExitComm,NULL,NULL,NULL,NULL");
+	    return false;
+	}
+	if(trim(rd.RData).length == 0){
+		st = rd.ControlAll("Read,ASC,176,20,NULL");
+		if (st != 0) 
+    	{
+			alert("读卡失败！");
+		    rd.ControlAll("ExitComm,NULL,NULL,NULL,NULL");
+		    return false;
+    	}
+		var my_str=toAscii(rd.RData);
+		var i=my_str.length;
+		var te= "";
+		i=i-1;
+		for (var x = i; x >=0; x--)
+		{
+		te += my_str.charAt(x);
+		}
+		return te;
+	}else{
+		return trim(rd.RData);
+	}
+}
+
+//写卡
+function T6WriteCard(cardNo){
+	//核对密码
+	st = rd.ControlAll("CheckPass_SLE4442,ASC,NULL,NULL,FFFFFF");
+	if (st != 0)
+	{
+		st = rd.ControlAll("CheckPass_SLE4442,ASC,NULL,NULL,ab82ef"); 
+		if (st != 0)
+		{
+			alert("核对密码失败 CheckPass_SLE4442 Error:"+st.toString(10));
+			rd.ControlAll("ExitComm,NULL,NULL,NULL,NULL");
+			return false;
+		}
+	}
+	//写卡
+	st = rd.ControlAll("Write,NULL,64,16,"+cardNo);
+	if(st != 0){
+		return false;
+	}
+	//更改密码
+	st = rd.ControlAll("ChangePass_SLE4442,ASC,NULL,NULL,ab82ef"); 
+	if (st != 0)
+	{
+		alert("更改密码失败:"+st.toString(10));
+		rd.ControlAll("ExitComm,NULL,NULL,NULL,NULL");
+		return;
+	}
+	return true;
+}
+
+//关闭
+function T6Close(){
+	st = rd.ControlAll("ExitComm,NULL,NULL,NULL,NULL");
+	if (st != 0) 
+	{
+	    alert("关闭失败！");
+	    return false;
+	}
+	return true;
+}
+/** t6卡API end**/
 //去除空格
 function trim(str)
 {   
-    return str.replace( /^\str*/, "" ).replace( /\str*$/, "" );
+    return str.replace( /^\str*/, "" ).replace( /\str*$/, "" ).replace(/^[\s\t]+|[\s\t]+$/, "").replace(/^[\s \t]+|[\s \t]+$/, "");
 }
 /** 检查radio , 设置check 处 **/
 function handleRadio( radioName, radioValue )
@@ -475,4 +576,42 @@ function luhmCheck(bankno){
     	return false;
     }        
 }
-	
+var symbols = " !\"#$%&'()*+,-./0123456789:;<=>?@";
+var loAZ = "abcdefghijklmnopqrstuvwxyz";
+symbols+= loAZ.toUpperCase();
+symbols+= "[\\]^_`";
+symbols+= loAZ;
+symbols+= "{|}~";
+
+function toAscii(str)
+{
+	valueStr = str.toLowerCase();
+    var hex = "0123456789abcdef";
+	var text = "";
+	var i=0;
+
+	for( i=0; i<valueStr.length; i=i+2 )
+	{
+		var char1 = valueStr.charAt(i);
+		if ( char1 == ':' )
+		{
+			i++;
+			char1 = valueStr.charAt(i);
+		}
+		var char2 = valueStr.charAt(i+1);
+		var num1 = hex.indexOf(char1);
+		var num2 = hex.indexOf(char2);
+		var value = num1 << 4;
+		value = value | num2;
+
+		var valueInt = parseInt(value);
+		var symbolIndex = valueInt - 32;
+		var ch = '';
+		if ( symbolIndex >= 0 && value <= 126 )
+		{
+			ch = symbols.charAt(symbolIndex)
+		}
+		text += ch;
+	}
+	return text;
+}

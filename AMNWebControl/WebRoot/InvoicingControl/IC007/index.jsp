@@ -42,11 +42,6 @@
 		.tablescroll_foot{font-weight:bold;background-color:#eee;border-left:0;border-top:0;margin-top:3px;}
 		.tablescroll tfoot td{border-right:0;border-bottom:0;}
     </style>
-	<script language="vbscript">
-			function toAsc(str)
-			toAsc = hex(asc(str))
-			end function
-	</script>
 </head>
 <body onLoad="initMap()">
 	<div class="l-loading" style="display:block;height:100%;" id="pageloading"></div> 

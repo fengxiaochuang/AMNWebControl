@@ -142,9 +142,15 @@
 	     			var cardNo="";
 	     			if(parent.document.getElementById("shoplevel").value!="1")
 	     			{
-				     	var CardControl=parent.parent.document.getElementById("CardCtrl");
-						CardControl.Init(parent.parent.commtype,parent.parent.prot,parent.parent.password1,parent.parent.password2,parent.parent.password3);
-						cardNo=CardControl.ReadCard();
+	     				var cardNo="";
+						if(T6Init()){
+							cardNo = T6ReadCard();
+				    		T6Close();
+				    	}else{
+				    		var CardControl=parent.document.getElementById("CardCtrlOld");
+				    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+				    		cardNo=CardControl.ReadCard();
+				    	}
 						if(cardNo=="")
 						{
 							$.ligerDialog.error("请初始化卡号");

@@ -972,9 +972,15 @@
    	
    	  function readOldCardInfo()
         {
-        	var CardControl=parent.document.getElementById("CardCtrl");
-			CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-			var cardNo=CardControl.ReadCard();
+			var cardNo="";
+			if(T6Init()){
+				cardNo = T6ReadCard();
+	    		T6Close();
+	    	}else{
+	    		var CardControl=parent.document.getElementById("CardCtrlOld");
+	    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+	    		cardNo=CardControl.ReadCard();
+	    	}
 			if(cardNo!="")
 			{
 				document.getElementById("changebeforcardno").value=cardNo;
@@ -1148,9 +1154,16 @@
       
     function readOldCard()
     {
-    	var CardControl=parent.document.getElementById("CardCtrl");
-		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-		validateOldCardInfo(CardControl.ReadCard());
+    	var cardNo = "";
+		if(T6Init()){
+			cardNo = T6ReadCard();
+    		T6Close();
+    	}else{
+    		var CardControl=parent.document.getElementById("CardCtrlOld");
+    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+    		cardNo=CardControl.ReadCard();
+    	}
+		validateOldCardInfo(cardNo);
     }
       
       
@@ -1685,12 +1698,18 @@
 						}
 					    if(bool)
 					    {   
-					    	var CardControl=parent.document.getElementById("CardCtrl");
-					    	CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+					    	var inserCardno="";
+							if(T6Init()){
+								inserCardno = T6ReadCard();
+					    		T6Close();
+					    	}else{
+					    		var CardControl=parent.document.getElementById("CardCtrlOld");
+					    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+					    		inserCardno=CardControl.ReadCard();
+					    	}
 					    	//折扣转卡 判断插入读卡器的卡不能是老卡
 					    	if(document.getElementById("changetype").value==0)
 					    	{	
-					    		var inserCardno=CardControl.ReadCard();
 					    		if(checkNull(inserCardno)!="" && checkNull(inserCardno)==document.getElementById("changebeforcardno").value)
 					    		{
 					    			$.ligerDialog.error("折扣转卡读卡器中的卡不能为老卡!");
@@ -1703,7 +1722,6 @@
 					    	if(document.getElementById("changetype").value==0
 					    			|| document.getElementById("changetype").value==1)   //折扣转卡
 					    	{	
-					    		var inserCardno=CardControl.ReadCard();
 					    		if(inserCardno.length!=20 
 					    				&& inserCardno!="" 
 					    					&& inserCardno!=document.getElementById("changeaftercardno").value)
@@ -1716,7 +1734,6 @@
 					    	}
 					    	else if(document.getElementById("changetype").value==7)  //并卡
 					    	{	
-					    		var inserCardno=CardControl.ReadCard();
 					    		if(isRandom && inserCardno.length!=20 
 					    				&& inserCardno!="" 
 					    					&& inserCardno!=document.getElementById("changebeforcardno").value)
@@ -1730,7 +1747,6 @@
 					    	//老卡并老卡 插入读卡器中的卡必须为老卡
 					    	if(document.getElementById("changetype").value==6)
 					    	{	
-					    		var inserCardno=CardControl.ReadCard();
 					    		if(isRandom && checkNull(inserCardno)!=document.getElementById("changebeforcardno").value)
 					    		{
 					    			$.ligerDialog.error("老卡并老卡读卡器中的卡不是"+document.getElementById("changebeforcardno").value+",请确认读卡器中的卡");
@@ -1743,16 +1759,25 @@
 					    	var cardoption=1;	
 					    	if(document.getElementById("changetype").value!="9")
 					    	{
+					    		var cardNo = "";
 					    		if(document.getElementById("changetype").value==6 || document.getElementById("changetype").value==7)
 					    		{
 					    			if(isRandom){
-					    				cardoption=CardControl.WriteCard(document.getElementById("changebeforcardno").value);
+					    				cardNo = document.getElementById("changebeforcardno").value;
 					    			}
 					    		}
 					    		else
 					    		{
-					    			cardoption=CardControl.WriteCard(document.getElementById("changeaftercardno").value);
+					    			cardNo = document.getElementById("changeaftercardno").value;
 					    		}	
+					    		if(T6Init()){
+					    			cardoption = T6WriteCard(cardNo)?1:0;
+					    			T6Close();
+					    		}else{
+					    			var CardControl=parent.document.getElementById("CardCtrlOld");
+					    			CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+					    			cardoption = CardControl.WriteCard(cardNo);
+					    		}
 					    		
 					    	}
 					    	if(cardoption==1)

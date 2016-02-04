@@ -1058,7 +1058,6 @@
     {
     	try
 	    {
-	    	//document.getElementById("cscardno").readOnly="readOnly";
 	    	document.getElementById("csmanualno").readOnly="readOnly";
 	    	document.getElementById("tuangoucardno").readOnly="readOnly";
 			document.getElementById("tiaomacardno").readOnly="readOnly";
@@ -1070,15 +1069,18 @@
     }
     function editCurDetailInfo()
     {
-    	alert("1");
+    	var cardNo="";
+		if(T6Init()){
+			cardNo = T6ReadCard();
+    		T6Close();
+    	}else{
+    		var CardControl=parent.document.getElementById("CardCtrlOld");
+    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+    		cardNo=CardControl.ReadCard();
+    	}
     	if(document.getElementById("paramSp108").value*1==0)
     	{
 	    	document.getElementById("sumKeepBalance").value=0;
-	    	var CardControl=parent.document.getElementById("CardCtrl");
-	    	alert("2");
-			CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-			alert("3");
-			var cardNo=CardControl.ReadCard();
 			if(cardNo!="")
 			{
 				if(cardNo==document.getElementById("cscardno").value)
@@ -1113,9 +1115,6 @@
   		{
   			
   			document.getElementById("sumKeepBalance").value=0;
-	    	var CardControl=parent.document.getElementById("CardCtrl");
-			CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-			var cardNo=CardControl.ReadCard();
 			if(cardNo!="")
 			{
 				document.getElementById("billflag").value="1";
@@ -1127,14 +1126,14 @@
 	    	else
 	    	{
   				$.ligerDialog.prompt('输入会员卡号', function (yes,value)
-  											  { if(yes) 
-  											    { 
-  											    	document.getElementById("billflag").value="1";
-													document.getElementById("billflag").value=1;
-													document.getElementById("cscardno").value=value;
-													document.getElementById("lbCardNo").innerHTML=value;
-  											    	validateCscardno(document.getElementById("cscardno"));
-  											    } });
+				{ if(yes) 
+				  { 
+				  	document.getElementById("billflag").value="1";
+					document.getElementById("billflag").value=1;
+					document.getElementById("cscardno").value=value;
+					document.getElementById("lbCardNo").innerHTML=value;
+				  	validateCscardno(document.getElementById("cscardno"));
+     			 } });
   			}
   		}
     }
@@ -1449,6 +1448,7 @@ function validateItemMessage(request)
      	var curProjectinfo=responsetext.curProjectinfo;
      	if(curProjectinfo==null)
      	{
+     		alert("11");
      		$.ligerDialog.warn("输入的项目编码不存在!");
      		commoninfodivdetial.updateRow(curRecord,{csitemname:'',csitemno: ''});
      	}
@@ -2543,15 +2543,21 @@ function showTextByinfoType(rowdata,readType)
 					 {
 						 if(iscardcostflag==1 && document.getElementById("paramSp108").value*1==0 )//有卡消费
 						 {
-						     	var CardControl=parent.document.getElementById("CardCtrl");
-								CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-								var factcardNo=CardControl.ReadCard();
-								if(factcardNo!=document.getElementById("cscardno").value)
-								{
-									$.ligerDialog.error("读卡器卡号与系统显示卡号不一致,或卡不在读卡器内!");
-						 			postState=0;
-						 			return ;
-								}
+							 var factcardNo="";
+							 if(T6Init()){
+							 	factcardNo = T6ReadCard();
+					    	 	T6Close();
+					    	 }else{
+						    		var CardControl=parent.document.getElementById("CardCtrlOld");
+						    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+						    		factcardNo=CardControl.ReadCard();
+						    	}
+							 if(factcardNo!=document.getElementById("cscardno").value)
+							 {
+							 	$.ligerDialog.error("读卡器卡号与系统显示卡号不一致,或卡不在读卡器内!");
+					 		 	postState=0;
+					 		 	return ;
+							 }
 						 }
 					 }
 					 if(checkOtherPayFlag==1) //有储值参与分单支付
@@ -4205,7 +4211,6 @@ function showTextByinfoType(rowdata,readType)
 		     		document.getElementById("itemprice").value="";
 		     		document.getElementById("itempay").value="";
 		     		document.getElementById("wCostPCount").value="";
-		     		
 		     	}
 		     	else if(checkNull(curProjectinfo.useflag)==2)
 				{
@@ -5677,9 +5682,15 @@ function showTextByinfoType(rowdata,readType)
 			{
 				if( result==true)
 				{
-					var CardControl=parent.document.getElementById("CardCtrl");
-					CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-					var cardNo=CardControl.ReadCard();
+					var cardNo="";
+					if(T6Init()){
+						cardNo = T6ReadCard();
+			    		T6Close();
+			    	}else{
+			    		var CardControl=parent.document.getElementById("CardCtrlOld");
+			    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+			    		cardNo=CardControl.ReadCard();
+			    	}
 					if(cardNo=="")
 					{
 						$.ligerDialog.error("请初始化卡号");

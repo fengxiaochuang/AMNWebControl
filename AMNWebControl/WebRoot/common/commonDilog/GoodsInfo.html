@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
-    <title>²úÆ·µ¯³ö¿ò</title>
+    <title>äº§å“å¼¹å‡ºæ¡†</title>
     <link href="../ligerui/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <script src="../ligerui/json2.js" type="text/javascript"></script>
     <script src="../ligerui/jquery/jquery-1.5.2.min.js" type="text/javascript"></script>
@@ -11,12 +11,12 @@
   		<div  style="width:700px,height:98%; float:left; clear:both; border:1px solid #ccc; overflow:auto;font-size:12px;  ">
 			<table width="100%" border="0" cellspacing="1" cellpadding="0" style="font-size:12px;line-height:28px;" >
 				<tr>
-						<td width="10%">ÎïÆ·±àºÅ&nbsp;&nbsp;
+						<td width="10%">ç‰©å“ç¼–å·&nbsp;&nbsp;
 						</td>
 						<td>
 							<input type="text"name="strGoodsId" id="strGoodsId"    style="width:140;" />
 						</td>
-						<td width="10%">ÎïÆ·Ãû³Æ&nbsp;&nbsp;
+						<td width="10%">ç‰©å“åç§°&nbsp;&nbsp;
 						</td>
 						<td>
 							<input type="text"name="strGoodsName" id="strGoodsName"  style="width:140;" />
@@ -24,12 +24,12 @@
 						<td></td>
 				</tr>
 				<tr>
-						<td width="10%">²úÆ·´óÀà&nbsp;&nbsp;
+						<td width="10%">äº§å“å¤§ç±»&nbsp;&nbsp;
 						</td>
 						<td>
 							<input type="text"name="strGoodsType" id="strGoodsType"    style="width:140;" />
 						</td>
-						<td width="10%">Í³¼Æ´óÀà&nbsp;&nbsp;
+						<td width="10%">ç»Ÿè®¡å¤§ç±»&nbsp;&nbsp;
 						</td>
 						<td>
 							<input type="text"name="strGoodsRType" id="strGoodsRType"    style="width:140;" />
@@ -58,9 +58,9 @@
     		  	try{
 	    		  		commoninfodivmaster=$("#commoninfodivmaster").ligerGrid({
 	                	columns: [
-	                		{ display: 'ÎïÆ·±àºÅ', 	name: 'id.goodsno', 	width:100,align: 'left'},
-		           			{ display: 'ÎïÆ·Ãû³Æ', 	name: 'goodsname', 		width:180,align: 'left'},  
-		           			{ display: '±ê×¼µ¥Î»', 	name: 'saleunit', 		width:60,align: 'left', 
+	                		{ display: 'ç‰©å“ç¼–å·', 	name: 'id.goodsno', 	width:100,align: 'left'},
+		           			{ display: 'ç‰©å“åç§°', 	name: 'goodsname', 		width:180,align: 'left'},  
+		           			{ display: 'æ ‡å‡†å•ä½', 	name: 'saleunit', 		width:60,align: 'left', 
 				               editor: { type: 'select', data: goodsWPDWData, valueField: 'choose',selectBoxHeight:'220'},
 				            	render: function (item)
 				              	{
@@ -75,9 +75,9 @@
 				                    return '';
 				                } 
 				            },
-		           			{ display: '±ê×¼¼Û¸ñ', 	name: 'storesalseprice', 		width:60,align: 'left'}, 
-		           			{ display: '±ê×¼ÌõÂë', 	name: 'goodsbarno', 		width:100,align: 'left'},
-		           			{ display: 'ÎïÆ·´óÀà', 	name: 'goodstype', 		width:80,align: 'left' ,
+		           			{ display: 'æ ‡å‡†ä»·æ ¼', 	name: 'storesalseprice', 		width:60,align: 'left'}, 
+		           			{ display: 'æ ‡å‡†æ¡ç ', 	name: 'goodsbarno', 		width:100,align: 'left'},
+		           			{ display: 'ç‰©å“å¤§ç±»', 	name: 'goodstype', 		width:80,align: 'left' ,
 			                	editor: { type: 'select', data: goodsWPDLData, valueField: 'choose',selectBoxHeight:'220'},
 				            	render: function (item)
 				              	{
@@ -92,7 +92,7 @@
 				                    return '';
 				                } 
 				            },
-		           			{ display: 'Í³¼Æ·ÖÀà', 	name: 'goodspricetype', 		width:90,align: 'left' ,
+		           			{ display: 'ç»Ÿè®¡åˆ†ç±»', 	name: 'goodspricetype', 		width:90,align: 'left' ,
 			                    editor: { type: 'select', data: goodsWPTJData, valueField: 'choose',selectBoxHeight:'220'},
 				            	render: function (item)
 				              	{
@@ -124,7 +124,7 @@
 	            	}catch(e){alert(e.message);}
 	            	$("#searchButton").ligerButton(
 			        {
-			             text: '²éÑ¯²úÆ·', width: 100,
+			             text: 'æŸ¥è¯¢äº§å“', width: 100,
 				         click: function ()
 				         {
 				             searchGoodsInfo();

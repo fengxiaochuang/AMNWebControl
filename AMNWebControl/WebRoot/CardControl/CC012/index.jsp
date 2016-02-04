@@ -17,11 +17,7 @@
  	<script type="text/javascript" src="<%=ContextPath%>/common/amnreport.js"></script>
 	<script type="text/javascript" src="<%=ContextPath%>/common/standprint.js"></script>
 	<script type="text/javascript" src="<%=ContextPath%>/CardControl/CC012/cc012.js"></script>
-	<script language="vbscript">
-			function toAsc(str)
-			toAsc = hex(asc(str))
-			end function
-	</script>
+
 	<style type="text/css">
            body{ font-size:12px;}
         .l-table-edit {}
@@ -37,7 +33,6 @@
 	    .l-layout-top{background:#102A49; color:White;}
 	    .l-layout-bottom{ background:#E5EDEF; text-align:center;}
 		 #dv_scroll{position:absolute;height:98%;overflow:hidden;width:298px;}
-	
     </style>
 </head>
 <body >
@@ -170,6 +165,8 @@
 				<tr >
 					<td colspan="3" width="100%">
 						<div id="toptoolbardetial"></div> 
+						<div id="keysList" style="background: rgb(255, 255, 255); border: 2px solid rgb(164, 166, 161); border-image: none; left: 83px; top: 440px; width: 350px; font-size: 13px; display: none; position: absolute; z-index: 2; cursor: default;" onblur=""></div>
+						<style>.sman_selectedStyle{background-Color:#102681;color:#FFFFFF}</style>
 						<div id="commoninfodivdetial" style="margin:0; padding:0"></div>
 					</td>
 				</tr>
@@ -320,12 +317,9 @@
   <div style="display:none;">
   <!-- g data total ttt -->
 </div>
- 
 </body>
 </html>
 	<script language="JavaScript">
   	 	var contextURL="<%=request.getContextPath()%>";
   	 	var currentdate=new Date("<%=new java.text.SimpleDateFormat("yyyy/MM/dd").format(new Date())%>");
-  		document.write("<div id=\"keysList\" style=\"z-index:2;width:350px;position:absolute;display:none;background:#FFFFFF;border: 2px solid #a4a6a1;font-size:13px;cursor: default;\" onblur> </div>");
-        document.write("<style>.sman_selectedStyle{background-Color:#102681;color:#FFFFFF}</style>");
 	</script>

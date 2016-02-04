@@ -439,7 +439,7 @@
 			document.getElementById("subsidyamtE").value="";
 			document.getElementById("subsidyamtF").value="";
 			var today = new Date();
-			var intYear=today.getYear();
+			var intYear=today.getFullYear().toString();
 			var intMonth=today.getMonth()+1;
 			var intDay=today.getDate();
 			var today = intYear.toString()+"-"+fullStr(intMonth.toString());
@@ -1504,7 +1504,7 @@
 	    		document.getElementById("shandcompid").focus();
 	    		document.getElementById("sconditionnum").disabled=true;
 	    		var today = new Date();
-				var intYear=today.getYear();
+				var intYear=today.getFullYear().toString();
 				var intMonth=today.getMonth()+1;
 				var intDay=today.getDate();
 				var today = intYear.toString()+"-"+fullStr(intMonth.toString());
@@ -1880,7 +1880,7 @@
 	    		document.getElementById("thandcompid").focus();
 	    		document.getElementById("sconditionnum").disabled=true;
 	    		var today = new Date();
-				var intYear=today.getYear();
+				var intYear=today.getFullYear().toString();
 				var intMonth=today.getMonth()+1;
 				var intDay=today.getDate();
 				var today = intYear.toString()+"-"+fullStr(intMonth.toString());
@@ -2014,7 +2014,7 @@
 	    		document.getElementById("thandcompid").focus();
 	    		document.getElementById("sconditionnum").disabled=true;
 	    		var today = new Date();
-				var intYear=today.getYear();
+				var intYear=today.getFullYear().toString();
 				var intMonth=today.getMonth()+1;
 				var intDay=today.getDate();
 				var today = intYear.toString()+"-"+fullStr(intMonth.toString());
@@ -2054,7 +2054,7 @@
 	    		document.getElementById("subsidyamtE").value=0
 	    		document.getElementById("subsidyamtF").value=0;
 	    		var today = new Date();
-				var intYear=today.getYear();
+				var intYear=today.getFullYear().toString();
 				var intMonth=today.getMonth()+1;
 				var intDay=today.getDate();
 				var today = intYear.toString()+"-"+fullStr(intMonth.toString());
@@ -2225,7 +2225,7 @@ function isNumber_E(sNum) {
     function postStaffDutyAmt()
 	{
 		var today = new Date();
-		var intYear=today.getYear();
+		var intYear=today.getFullYear().toString();
 		var intMonth=today.getMonth()+1;
 		var intDay=today.getDate();
 		var today = intYear.toString()+"-"+fullStr(intMonth.toString())+"-"+fullStr(intDay.toString());

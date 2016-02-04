@@ -41,7 +41,7 @@
             });
 			
 			$("#batchhandtoptoolbar").ligerToolBar({ items: [
-				{text: '年:<select id="kqyear" name="kqyear" style="width:60"><option value="2014">2014</option></select>'},
+				{text: '年:<select id="kqyear" name="kqyear" style="width:60"><option value="2016">2016</option></select>'},
       		    {text: '月:<select id="kqmonth" name="kqmonth" style="width:40">'+monthhtml+'</select>'},
       		    { text: '<font color="blue">登记</font>', click: uploadStaffAbsence  }
 	         ]

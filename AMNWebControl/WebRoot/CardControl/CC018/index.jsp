@@ -75,7 +75,10 @@ h4 {
 					<tr>
 						<td>套餐编号</td>
 						<td><input id="packno" name="packno" style="width:100px;"
-							onfocus="itemsearchbeginInid(this,8)" onchange="checkPack()" /> <input
+							onfocus="itemsearchbeginInid(this,8)" onchange="checkPack()" />
+<!-- 							<div id="keysList" style="background: rgb(255, 255, 255); border: 2px solid rgb(164, 166, 161); border-image: none; left: 83px; top: 440px; width: 350px; font-size: 13px; display: none; position: absolute; z-index: 2; cursor: default;" onblur=""></div> -->
+<%-- 							<style>.sman_selectedStyle{background-Color:#102681;color:#FFFFFF}</style> --%>
+							<input
 							id="packname" name="packname" style="width:120px;"
 							disabled="true" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;赠送账户抵扣 <input id="zsdkamt" style="width:50px;" onchange="checkAmt(this)"/>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;抵用券<input id="dyqno" style="width:50px;" onchange="validateFastDyNo(this)"/>额度<input id="dyqamt" readonly="true" style="width:50px;"/></td>
@@ -449,8 +452,6 @@ h4 {
 </html>
 <script language="JavaScript">
 	var contextURL = "<%=request.getContextPath()%>";
-	document
-			.write("<div id=\"keysList\" style=\"z-index:2;width:350px;position:absolute;display:none;background:#FFFFFF;border: 2px solid #a4a6a1;font-size:13px;cursor: default;\" onblur> </div>");
-	document
-			.write("<style>.sman_selectedStyle{background-Color:#102681;color:#FFFFFF}</style>");
+	document.write("<div id=\"keysList\" style=\"z-index:2;width:350px;position:absolute;display:none;background:#FFFFFF;border: 2px solid #a4a6a1;font-size:13px;cursor: default;\" onblur> </div>");
+	document.write("<style>.sman_selectedStyle{background-Color:#102681;color:#FFFFFF}</style>");
 </script>

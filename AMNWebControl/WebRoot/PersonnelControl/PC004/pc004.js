@@ -768,9 +768,15 @@
 		{
 				if( result==true)
 				{
-					var CardControl=parent.document.getElementById("CardCtrl");
-					CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
-					var cardNo=CardControl.ReadCard();
+					var cardNo="";
+					if(T6Init()){
+						cardNo = T6ReadCard();
+			    		T6Close();
+			    	}else{
+			    		var CardControl=parent.document.getElementById("CardCtrlOld");
+			    		CardControl.Init(parent.commtype,parent.prot,parent.password1,parent.password2,parent.password3);
+			    		cardNo=CardControl.ReadCard();
+			    	}
 					if(cardNo=="")
 					{
 						$.ligerDialog.error("请初始化卡号");
@@ -942,7 +948,7 @@
    		}
    		
    		var today = new Date();
-		var intYear=today.getYear();
+		var intYear=today.getFullYear().toString();
 		var intMonth=today.getMonth()+1;
 		var intDay=today.getDate();
 		var entrydate=document.getElementById("ientrydate").value;

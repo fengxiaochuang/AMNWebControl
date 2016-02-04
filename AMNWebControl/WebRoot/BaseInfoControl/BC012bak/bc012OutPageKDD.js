@@ -57,7 +57,7 @@
    			 document.getElementById("beforeyejiamt").value=checkNull(parent.curRecord.baseresult);
    			 document.getElementById("appchangecompid").value=checkNull(parent.curRecord.id.compno);
    			 var today = new Date();
-			 var intYear=today.getYear();
+			 var intYear=today.getFullYear().toString();
 			 var intMonth=today.getMonth()+1;
 			 if(intMonth==12)
 			 {
